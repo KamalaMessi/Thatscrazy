@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'PapyrusCustom';
+  src: url('fonts/papyrus.ttf') format('truetype');
+}
+
+.page-title {
+  font-family: 'PapyrusCustom', Papyrus, fantasy;
+}
+
+
 /* --- reset i baza --- */
 * { box-sizing: border-box; font-family: system-ui, Arial, sans-serif; }
 :root{
