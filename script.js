@@ -132,7 +132,7 @@ window.addEventListener("DOMContentLoaded", () => {
         result = `${randInt(-100, 100)} i think`;
         break;
       case "*":
-        result = "67... maybe...";
+        result = "6... maybe 7... 67...";
         break;
       case "/":
         result = "Idk bro 💀🙏";
