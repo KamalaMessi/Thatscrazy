@@ -91,5 +91,30 @@ function percent() {
 }
 
 // Obsługa kliknięć
-ke
+keys.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  if (btn.dataset.num) return inputNumber(btn.dataset.num);
+  if (btn.dataset.op) return setOperator(btn.dataset.op);
+
+  const action = btn.dataset.action;
+  if (action === "equals") return evaluate();
+  if (action === "clear") return clearAll();
+  if (action === "backspace") return backspace();
+  if (action === "percent") return percent();
+});
+
+// Klawiatura
+document.addEventListener("keydown", (e) => {
+  if ("0123456789.".includes(e.key)) inputNumber(e.key);
+  if ("+-*/".includes(e.key)) setOperator(e.key);
+  if (e.key === "Enter" || e.key === "=") evaluate();
+  if (e.key === "Backspace") backspace();
+  if (e.key.toLowerCase() === "c") clearAll();
+  if (e.key === "%") percent();
+});
+
+updateScreen();
+
 
