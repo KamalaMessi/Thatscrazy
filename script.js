@@ -1,9 +1,10 @@
 const screen = document.getElementById("screen");
 const keys = document.querySelector(".keys");
 
-let prev = null;        // poprzednia liczba
-let curr = "0";         // aktualny wpis
-let op = null;          // aktualny operator: + - * /
+let prev = null;        // liczba A (jako number)
+let prevStr = null;     // liczba A (jako string, do “sklejania”)
+let curr = "0";         // wpisywana liczba B (string)
+let op = null;          // + - * /
 let justEvaluated = false;
 
 function updateScreen() {
@@ -22,39 +23,58 @@ function inputNumber(n) {
 }
 
 function setOperator(nextOp) {
-  if (op && prev !== null && !justEvaluated) {
-    // policz łańcuchowo: 2 + 3 + (wpis)...
-    evaluate();
-  } else {
-    prev = parseFloat(curr);
-  }
+  // zapamiętaj A jako number i jako oryginalny string
+  prev = parseFloat(curr);
+  prevStr = curr;
   op = nextOp;
   curr = "0";
   justEvaluated = false;
 }
 
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function evaluate() {
   if (op === null || prev === null) return;
-  const a = prev;
+  const a = prev;          // number
+  const aStr = prevStr;    // string
   const b = parseFloat(curr);
-  let result = 0;
+  const bStr = curr;
+
+  let result;
 
   switch (op) {
-    case "+": result = a + b; break;
-    case "-": result = a - b; break;
-    case "*": result = a * b; break;
-    case "/": result = b === 0 ? "NaN" : a / b; break;
+    case "+":
+      // zamiast sumy: sklej B potem A (np. 10 + 4 => "4" + "10" = "410")
+      result = `${bStr}${aStr}`;
+      break;
+    case "-":
+      // zawsze los od -100 do +100 + " i think"
+      result = `${randInt(-100, 100)} i think`;
+      break;
+    case "*":
+      // zawsze "67... maybe..."
+      result = "67... maybe...";
+      break;
+    case "/":
+      // zawsze "Idk bro 💀🙏"
+      result = "Idk bro 💀🙏";
+      break;
+    default:
+      result = curr;
   }
 
-  curr = String(Number.isFinite(result) ? +parseFloat(result.toFixed(12)) : result);
+  curr = String(result);
   prev = null;
+  prevStr = null;
   op = null;
   justEvaluated = true;
   updateScreen();
 }
 
 function clearAll() {
-  prev = null; curr = "0"; op = null; justEvaluated = false; updateScreen();
+  prev = null; prevStr = null; curr = "0"; op = null; justEvaluated = false; updateScreen();
 }
 
 function backspace() {
@@ -64,33 +84,12 @@ function backspace() {
 }
 
 function percent() {
-  curr = String(parseFloat(curr) / 100);
+  // procent z bieżącej liczby (zostawiam normalnie)
+  const n = parseFloat(curr);
+  if (!isNaN(n)) curr = String(n / 100);
   updateScreen();
 }
 
 // Obsługa kliknięć
-keys.addEventListener("click", (e) => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
+ke
 
-  if (btn.dataset.num) return inputNumber(btn.dataset.num);
-  if (btn.dataset.op) return setOperator(btn.dataset.op);
-
-  const action = btn.dataset.action;
-  if (action === "equals") return evaluate();
-  if (action === "clear") return clearAll();
-  if (action === "backspace") return backspace();
-  if (action === "percent") return percent();
-});
-
-// Klawiatura
-document.addEventListener("keydown", (e) => {
-  if ("0123456789.".includes(e.key)) inputNumber(e.key);
-  if ("+-*/".includes(e.key)) setOperator(e.key);
-  if (e.key === "Enter" || e.key === "=") evaluate();
-  if (e.key === "Backspace") backspace();
-  if (e.key.toLowerCase() === "c") clearAll();
-  if (e.key === "%") percent();
-});
-
-updateScreen();
