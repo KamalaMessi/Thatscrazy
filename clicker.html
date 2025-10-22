@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Narzędzia — Clicker</title>
+  <title>Tools — Clicker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <aside class="sidebar">
     <div class="brand">thatscrazy.lol</div>
-<nav class="nav">
-  <a href="achievements.html" class="nav-link">🏆 Achievements</a>
-  <div class="nav-sep" aria-hidden="true"></div>
+    <nav class="nav">
+      <a href="achievements.html" class="nav-link">🏆 Achievements</a>
+      <div class="nav-sep" aria-hidden="true"></div>
 
-  <!-- set the 'active' class on the current page -->
-  <a href="index.html" class="nav-link">🧮 Calculator</a>
-  <a href="timer.html" class="nav-link">⏱️ Timer</a>
-  <a href="clicker.html" class="nav-link">🖱️ Clicker</a>
-</nav>
+      <a href="index.html" class="nav-link">🧮 Calculator</a>
+      <a href="timer.html" class="nav-link">⏱️ Timer</a>
+      <a href="clicker.html" class="nav-link active">🖱️ Clicker</a>
+    </nav>
     <div class="foot">made to be wrong™</div>
   </aside>
 
   <main class="content">
     <h1 class="page-title">🖱️ Clicker</h1>
-    <div class="card">
-      <p>Tu będzie <strong>malicious clicker</strong> 😈. Na razie placeholder.</p>
+
+    <div class="card clicker">
+      <div class="clicker__top">
+        <div class="score">
+          Score: <span id="score">0</span>
+        </div>
+        <div class="streak muted">
+          Every 3rd click gets kinda weird gng...
+        </div>
+      </div>
+
+      <div class="playground" id="playground">
+        <!-- red demon -->
+        <button id="freakBtn" class="btn-main">FREAK ME!</button>
+
+        <!-- decoy spawner target -->
+        <div id="decoyMount"></div>
+      </div>
+
+      <p class="muted" style="margin-top:10px;">
+        Tip: if it looks blocked, it might still be clickable. Or not. Idk bro.
+      </p>
     </div>
   </main>
+
+  <script src="clicker.js" defer></script>
 </body>
 </html>
 
