@@ -277,7 +277,7 @@
     }
   }
 
-  // wire up
+  // wire up (ahhh... a wire...)
   btn.addEventListener('click', doMainClick);
   window.addEventListener('load', rememberCenter);
   window.addEventListener('resize', rememberCenter);
