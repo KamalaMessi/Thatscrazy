@@ -8,91 +8,93 @@
   let score = 0;
   let clicks = 0;
   let lastMischief = null;
-  let centerPos = null; // to return after stunts
-  let trueBlockedUntil = 0; // timestamp when real block ends
+  let centerPos = null;
+  let trueBlockedUntil = 0;
 
   const namePool = [
-    "FREAK ME!",
-    "freakster",
-    "try harder gng",
-    "skill issue",
-    "blud CANT play ts",
-    "click me and youre gay",
-    "what is happening",
-    "THATS CRAZY",
-    "dawng ts crazy…"
+    "FREAK ME!","freakster","try harder gng","skill issue",
+    "blud CANT play ts","click me and youre gay","what is happening",
+    "THATS CRAZY","dawng ts crazy…"
   ];
 
-  // mischiefs to roll every 3rd click
-  const MISCHIEF = {
-    TELEPORT: 'TELEPORT',
-    TRUE_BLOCK: 'TRUE_BLOCK',
-    RAINBOW: 'RAINBOW',
-    HELI: 'HELI',
-    NAME_SWAP: 'NAME_SWAP',
-    FAKE_BLOCK: 'FAKE_BLOCK',
-    DECOY_PAIR: 'DECOY_PAIR'
+  /*** MISCHIEFS ***/
+  const M = {
+    TELEPORT:'TELEPORT',
+    TRUE_BLOCK:'TRUE_BLOCK',
+    RAINBOW:'RAINBOW',
+    HELI:'HELI',
+    NAME_SWAP:'NAME_SWAP',
+    FAKE_BLOCK:'FAKE_BLOCK',
+    DECOY_PAIR:'DECOY_PAIR',
+    JITTER:'JITTER',          // drobne drgania 2s
+    DODGE:'DODGE',            // ucieka od kursora 5s
+    BOUNCE:'BOUNCE',          // odbijanie po arenie 3s
+    SIZE_WARP:'SIZE_WARP',    // rośnie/maleje przez chwilę
+    GHOST_CLONE:'GHOST_CLONE',// szary przycisk-duch (kradnie klik)
+    CONFETTI_SPAM:'CONFETTI'  // spawner latających emoji
   };
 
   const pool = [
-    MISCHIEF.TELEPORT,
-    MISCHIEF.TRUE_BLOCK,
-    MISCHIEF.RAINBOW,
-    MISCHIEF.HELI,
-    MISCHIEF.NAME_SWAP,
-    MISCHIEF.FAKE_BLOCK,
-    MISCHIEF.DECOY_PAIR
+    M.TELEPORT, M.TRUE_BLOCK, M.RAINBOW, M.HELI, M.NAME_SWAP, M.FAKE_BLOCK, M.DECOY_PAIR,
+    M.JITTER, M.DODGE, M.BOUNCE, M.SIZE_WARP, M.GHOST_CLONE, M.CONFETTI_SPAM
   ];
 
   function pickMischief(){
-    // avoid repeating the exact same trick twice in a row
-    let choices = pool.filter(m => m !== lastMischief);
+    const choices = pool.filter(x => x !== lastMischief);
     const pick = choices[Math.floor(Math.random()*choices.length)];
     lastMischief = pick;
     return pick;
   }
 
-  function updateScore(){
-    scoreEl.textContent = score;
-  }
+  function updateScore(){ scoreEl.textContent = score; }
 
   function rememberCenter(){
-    // center within field
-    const rect = field.getBoundingClientRect();
-    const br = btn.getBoundingClientRect();
-    const left = (rect.width - br.width)/2;
-    const top  = (rect.height - br.height)/2;
+    const r = field.getBoundingClientRect();
+    const b = btn.getBoundingClientRect();
+    const left = (r.width - b.width)/2;
+    const top  = (r.height - b.height)/2;
     centerPos = { left, top };
-    btn.style.left = `${left}px`;
-    btn.style.top  = `${top}px`;
+    setPos(btn, left, top);
   }
 
-  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function rand(a,b){ return Math.random()*(b-a)+a; }
+  function rint(a,b){ return Math.floor(rand(a,b+1)); }
   function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
 
-  // === Mischief implementations ===
+  function setPos(el, left, top){
+    el.style.left = `${left}px`;
+    el.style.top  = `${top}px`;
+  }
 
-  // 1) Teleport randomly for a few hops
+  /** helpers **/
+  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+  function shake(){ field.classList.add('shake'); setTimeout(()=>field.classList.remove('shake'), 350); }
+  function spawnFloat(x,y,txt){
+    const s = document.createElement('div');
+    s.className = 'fly';
+    s.textContent = txt;
+    s.style.left = `${x}px`;
+    s.style.top  = `${y}px`;
+    field.appendChild(s);
+    setTimeout(()=>s.remove(), 3600);
+  }
+
+  /*** EFFECTS IMPLEMENTATION ***/
+
   async function doTeleport(){
     const rect = field.getBoundingClientRect();
     const br = btn.getBoundingClientRect();
-    for(let i=0;i<4;i++){
+    for(let i=0;i<5;i++){
       const maxL = rect.width - br.width;
       const maxT = rect.height - br.height;
-      const left = clamp(rand(0, maxL), 0, maxL);
-      const top  = clamp(rand(0, maxT), 0, maxT);
-      btn.style.left = `${left}px`;
-      btn.style.top  = `${top}px`;
-      await sleep(350);
+      const left = clamp(rand(0,maxL),0,maxL);
+      const top  = clamp(rand(0,maxT),0,maxT);
+      setPos(btn, left, top);
+      await sleep(260);
     }
-    // return to center
-    if (centerPos) {
-      btn.style.left = `${centerPos.left}px`;
-      btn.style.top  = `${centerPos.top}px`;
-    }
+    if (centerPos) setPos(btn, centerPos.left, centerPos.top);
   }
 
-  // 2) True block for 3s (grey + not-allowed + no clicks)
   async function doTrueBlock(){
     trueBlockedUntil = performance.now() + 3000;
     btn.classList.add('btn-disabled');
@@ -100,115 +102,173 @@
     btn.classList.remove('btn-disabled');
   }
 
-  // 3) Rainbow glow for 3s
-  async function doRainbow(){
-    btn.classList.add('btn-rainbow');
-    await sleep(3000);
-    btn.classList.remove('btn-rainbow');
-  }
+  async function doRainbow(){ btn.classList.add('btn-rainbow'); await sleep(3000); btn.classList.remove('btn-rainbow'); }
+  async function doHeli(){ btn.classList.add('btn-spin'); await sleep(1200); btn.classList.remove('btn-spin'); if (centerPos) setPos(btn, centerPos.left, centerPos.top); }
+  async function doNameSwap(){ const base=btn.textContent; let pick=namePool[Math.floor(Math.random()*namePool.length)]; if(pick===base) pick="what is happening"; btn.textContent=pick; await sleep(3000); btn.textContent="FREAK ME!"; }
+  async function doFakeBlock(){ btn.classList.add('btn-fakeblocked'); await sleep(3000); btn.classList.remove('btn-fakeblocked'); }
 
-  // 4) Helicopter spin then back to center
-  async function doHeli(){
-    btn.classList.add('btn-spin');
-    await sleep(1200);
-    btn.classList.remove('btn-spin');
-    if (centerPos) {
-      btn.style.left = `${centerPos.left}px`;
-      btn.style.top  = `${centerPos.top}px`;
-    }
-  }
-
-  // 5) Change label to random funny name for a bit
-  async function doNameSwap(){
-    const curr = btn.textContent;
-    let picked = namePool[Math.floor(Math.random()*namePool.length)];
-    // avoid immediate duplicate
-    if (picked === curr) picked = "what is happening";
-    btn.textContent = picked;
-    await sleep(3000);
-    btn.textContent = "FREAK ME!";
-  }
-
-  // 6) Fake block: looks blocked (cursor), but still clickable
-  async function doFakeBlock(){
-    btn.classList.add('btn-fakeblocked');
-    await sleep(3000);
-    btn.classList.remove('btn-fakeblocked');
-  }
-
-  // 7) Spawn decoy pair (green resets score if clicked)
+  // two decoys (green resets)
   async function doDecoyPair(){
-    // mount container if not exists
     let wrap = decoyMount.querySelector('.decoys');
-    if (!wrap){
-      wrap = document.createElement('div');
-      wrap.className = 'decoys';
-      decoyMount.appendChild(wrap);
-    }
-
-    // green decoy
-    const green = document.createElement('button');
-    green.className = 'btn-decoy green';
-    green.textContent = "Do NOT touch me";
-
-    const red = document.createElement('button');
-    red.className = 'btn-decoy red';
-    red.textContent = "FREAK ME!";
-
-    const removeAll = () => {
-      green.remove();
-      red.remove();
-    };
-
-    green.addEventListener('click', () => {
-      // reset score on green click
-      score = 0; updateScore();
-      removeAll();
-    });
-    red.addEventListener('click', () => {
-      // clicking red here also counts as a click
-      doMainClick();
-      removeAll();
-    });
-
-    wrap.appendChild(green);
-    wrap.appendChild(red);
-
-    // Auto remove in 5s if untouched
-    setTimeout(removeAll, 5000);
+    if (!wrap){ wrap = document.createElement('div'); wrap.className='decoys'; decoyMount.appendChild(wrap); }
+    const green = document.createElement('button'); green.className='btn-decoy green'; green.textContent="Do NOT touch me";
+    const red   = document.createElement('button'); red.className='btn-decoy red';   red.textContent="FREAK ME!";
+    const remove = ()=>{ green.remove(); red.remove(); };
+    green.onclick = ()=>{ score=0; updateScore(); shake(); remove(); };
+    red.onclick   = ()=>{ doMainClick(); remove(); };
+    wrap.append(green, red);
+    setTimeout(remove, 6000);
   }
 
-  // helper sleep
-  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+  // tiny jitter run for 2s
+  async function doJitter(){
+    btn.classList.add('btn-trail');
+    const rect = field.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    const maxL = rect.width - br.width, maxT = rect.height - br.height;
+    const tEnd = performance.now() + 2000;
+    while (performance.now() < tEnd){
+      const curL = parseFloat(btn.style.left||"0");
+      const curT = parseFloat(btn.style.top ||"0");
+      const left = clamp(curL + rand(-20,20), 0, maxL);
+      const top  = clamp(curT + rand(-20,20), 0, maxT);
+      setPos(btn,left,top);
+      await sleep(60);
+    }
+    btn.classList.remove('btn-trail');
+    if (centerPos) setPos(btn, centerPos.left, centerPos.top);
+  }
 
-  // main click handler
+  // run from cursor for 5s
+  async function doDodge(){
+    let active = true;
+    const rect = field.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    const maxL = rect.width - br.width, maxT = rect.height - br.height;
+
+    function onMove(e){
+      // cursor position relative to field
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      const bx = parseFloat(btn.style.left||"0") + br.width/2;
+      const by = parseFloat(btn.style.top ||"0") + br.height/2;
+      const dx = bx - cx, dy = by - cy;
+      const dist = Math.hypot(dx,dy) || 1;
+      if (dist < 140){ // repel when near
+        const nx = dx/dist, ny = dy/dist;
+        const left = clamp(parseFloat(btn.style.left||"0") + nx*14, 0, maxL);
+        const top  = clamp(parseFloat(btn.style.top ||"0") + ny*14, 0, maxT);
+        setPos(btn,left,top);
+      }
+    }
+    field.addEventListener('mousemove', onMove);
+    await sleep(5000);
+    field.removeEventListener('mousemove', onMove);
+    if (centerPos) setPos(btn, centerPos.left, centerPos.top);
+  }
+
+  // bounce around for 3s
+  async function doBounce(){
+    btn.classList.add('btn-bounce');
+    const rect = field.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    let vx = rand(-3,3) || 2.2, vy = rand(-3,3) || -2.0;
+    let left = parseFloat(btn.style.left||"0");
+    let top  = parseFloat(btn.style.top ||"0");
+    const maxL = rect.width - br.width, maxT = rect.height - br.height;
+    const end = performance.now() + 3000;
+    while (performance.now() < end){
+      left += vx*4; top += vy*4;
+      if (left<=0 || left>=maxL){ vx*=-1; left = clamp(left,0,maxL); shake(); }
+      if (top <=0 || top >=maxT){ vy*=-1; top  = clamp(top,0,maxT); shake(); }
+      setPos(btn,left,top);
+      await sleep(16);
+    }
+    btn.classList.remove('btn-bounce');
+    if (centerPos) setPos(btn, centerPos.left, centerPos.top);
+  }
+
+  // size up/down for 3s
+  async function doSizeWarp(){
+    const orig = btn.style.transform || '';
+    btn.style.transform = 'scale(1.35)';
+    await sleep(900);
+    btn.style.transform = 'scale(0.75)';
+    await sleep(900);
+    btn.style.transform = orig;
+  }
+
+  // grey ghost button that "steals" a click (no score)
+  async function doGhostClone(){
+    const ghost = document.createElement('button');
+    ghost.className = 'btn-ghostfake';
+    ghost.textContent = "FREAK ME?";
+    const rect = field.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    const maxL = rect.width - br.width;
+    const maxT = rect.height - br.height;
+    setPos(ghost, clamp(rand(0,maxL),0,maxL), clamp(rand(0,maxT),0,maxT));
+    ghost.onclick = () => {
+      // steal click → minus 1 (nie schodź poniżej 0)
+      score = Math.max(0, score - 1);
+      updateScore();
+      spawnFloat(parseFloat(ghost.style.left||"0"), parseFloat(ghost.style.top||"0"), "−1");
+      ghost.remove();
+      shake();
+    };
+    field.appendChild(ghost);
+    setTimeout(()=>ghost.remove(), 4500);
+  }
+
+  // spam distractors (emoji) for 6s
+  async function doConfetti(){
+    const emo = ["🔥","💀","🤡","👀","✨","🌀","⚠️","🧠","🫠","🤣","🍀","🧨","🪩","🎯"];
+    const end = performance.now() + 6000;
+    while (performance.now() < end){
+      const x = rint(16, field.clientWidth-32);
+      const y = rint(60, field.clientHeight-32);
+      spawnFloat(x,y, emo[rint(0,emo.length-1)]);
+      await sleep(rint(120,240));
+    }
+  }
+
+  /** MAIN CLICK **/
   function doMainClick(){
-    // if truly blocked, ignore
     if (performance.now() < trueBlockedUntil) return;
 
-    score++;
-    clicks++;
-    updateScore();
+    // +1 and tiny floating +1
+    score++; clicks++; updateScore();
+    const br = btn.getBoundingClientRect();
+    spawnFloat(br.left - field.getBoundingClientRect().left + br.width/2,
+               br.top  - field.getBoundingClientRect().top  - 8, "+1");
 
-    // every 3rd click → mischief
+    // every 9th click shake arena
+    if (clicks % 9 === 0) shake();
+
+    // every 3rd → chaos
     if (clicks % 3 === 0){
       const act = pickMischief();
-      switch(act){
-        case MISCHIEF.TELEPORT:   doTeleport();    break;
-        case MISCHIEF.TRUE_BLOCK: doTrueBlock();   break;
-        case MISCHIEF.RAINBOW:    doRainbow();     break;
-        case MISCHIEF.HELI:       doHeli();        break;
-        case MISCHIEF.NAME_SWAP:  doNameSwap();    break;
-        case MISCHIEF.FAKE_BLOCK: doFakeBlock();   break;
-        case MISCHIEF.DECOY_PAIR: doDecoyPair();   break;
+      switch (act){
+        case M.TELEPORT:       doTeleport();      break;
+        case M.TRUE_BLOCK:     doTrueBlock();     break;
+        case M.RAINBOW:        doRainbow();       break;
+        case M.HELI:           doHeli();          break;
+        case M.NAME_SWAP:      doNameSwap();      break;
+        case M.FAKE_BLOCK:     doFakeBlock();     break;
+        case M.DECOY_PAIR:     doDecoyPair();     break;
+        case M.JITTER:         doJitter();        break;
+        case M.DODGE:          doDodge();         break;
+        case M.BOUNCE:         doBounce();        break;
+        case M.SIZE_WARP:      doSizeWarp();      break;
+        case M.GHOST_CLONE:    doGhostClone();    break;
+        case M.CONFETTI_SPAM:  doConfetti();      break;
       }
     }
   }
 
   // wire up
   btn.addEventListener('click', doMainClick);
-
-  // initial center calc after layout
   window.addEventListener('load', rememberCenter);
   window.addEventListener('resize', rememberCenter);
 })();
+
