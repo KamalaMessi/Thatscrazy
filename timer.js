@@ -83,7 +83,7 @@
         {name:"faux-seconds", scale: 0.73},
         {name:"light years (Thats crazy! 🤯)", scale: 1/ (60*60*24*365 * 3.154e7) }, // totalnie bez sensu
         {name:"hyperquantum-seconds", scale: 1e-6},
-        {name:"hold on lol", scale: 2.71828},
+        {name:"hold on lol idk whats ts", scale: 2.71828},
         {name:"thats crazy...", scale: 1/1800},
       ];
       unit = choices[rint(0, choices.length-1)];
@@ -92,7 +92,7 @@
     }
     if (!initial) {
       // podpowiedzi dla szanownego uzytkownika ze cos jest CHYBA nie tak
-      hint.textContent = ["what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts","you just left time's archiverse, what now lol"][rint(0,4)];
+      hint.textContent = ["what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts","you just left time's archiverse, what now lol", "hold on i think i know whats wrong", "nah i made it worse 💔", "i think we can stop studying now...? 🙏"][rint(0,4)];
     }
   }
 
