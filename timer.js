@@ -84,7 +84,7 @@
         {name:"light years (Thats crazy! 🤯)", scale: 1/ (60*60*24*365 * 3.154e7) }, // totalnie bez sensu
         {name:"hyperquantum-seconds", scale: 1e-6},
         {name:"hold on lol idk whats ts", scale: 2.71828},
-        {name:"thats crazy...", scale: 1/1800},
+        {name:"polskie 🇵🇱 sekundy, thats crazy...", scale: 1/1800},
       ];
       unit = choices[rint(0, choices.length-1)];
     } else {
@@ -158,7 +158,7 @@
 
     // jednostki (dla UNITS skalujemy wartość i nazwę)
     let shown = displayRem;
-    let unitName = "sekundy";
+    let unitName = "seconds";
     if (mode === "UNITS"){
       shown = displayRem * unit.scale;
       unitName = unit.name;
