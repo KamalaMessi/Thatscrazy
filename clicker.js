@@ -1,4 +1,4 @@
-(() => {
+  (() => {
   const $ = sel => document.querySelector(sel);
   const scoreEl = $('#score');
   const field = $('#playground');
@@ -114,7 +114,14 @@
     const green = document.createElement('button'); green.className='btn-decoy green'; green.textContent="Do NOT touch me";
     const red   = document.createElement('button'); red.className='btn-decoy red';   red.textContent="FREAK ME!";
     const remove = ()=>{ green.remove(); red.remove(); };
-    green.onclick = ()=>{ score=0; updateScore(); shake(); remove(); };
+   green.onclick = () => {
+  if (score >= 200 && window.ACH) ACH.unlock('clicker_reset200');
+  score = 0;
+  updateScore();
+  shake();
+  remove();
+};
+
     red.onclick   = ()=>{ doMainClick(); remove(); };
     wrap.append(green, red);
     setTimeout(remove, 6000);
@@ -235,6 +242,10 @@
   /** MAIN CLICK **/
   function doMainClick(){
     if (performance.now() < trueBlockedUntil) return;
+     
+    score++; clicks++; updateScore();
+  if (score >= 1000 && window.ACH) ACH.unlock('clicker_1000');
+
 
     // +1 and tiny floating +1
     score++; clicks++; updateScore();
