@@ -20,13 +20,14 @@
   let pausedAt = 0;             // ms od startu do pauzy
   let running = false;
 
-  // --- stan efektów ---
-  const modes = ["ACCEL","SLOW","JUMP","REVERSE","UNITS"];
-  let mode = "ACCEL";
-  let modeSince = 0;            // ms odkąd wybrano tryb
-  let jumpOffset = 0;           // sekundy (±) dla JUMP (jump to ja zaraz z balkonu)
-  let nextJumpAt = 0;           // ms od początku trybu do kolejnego skoku
-  let unit = { name: "seconds", scale: 1 }; // dla UNITS
+// --- stan efektów ---
+const MODE_INTERVAL_MS = 4000;   // ← bazowy interwał (u Ciebie 4 sekundy)
+let mode = "ACCEL";
+let modeSince = 0;
+let jumpOffset = 0;
+let nextJumpAt = 0;
+let unit = { name: "seconds", scale: 1 };
+
 
   // losowe pomocnicze zeby nie walnelo
   const rand = (a,b) => Math.random()*(b-a)+a;
@@ -68,14 +69,18 @@
     rafLoop();
   }
 
-  // wybór / rotacja trybu co 4s zeby nie bylo tego samego caly czas
-  function pickMode(initial=false){
-    const prev = mode;
-    const pool = modes.filter(m => m !== prev); // bez powtórki z rzędu bo nudno
-    mode = pool[rint(0, pool.length-1)];
-    modeSince = performance.now();
-    jumpOffset = 0;
-    nextJumpAt = rand(1500, 3500);
+function pickMode(initial = false){
+  const prev = mode;
+
+  // chyba UNITS ma x2, reszta po x1
+  let pool = ["UNITS","UNITS","ACCEL","SLOW","JUMP","REVERSE"].filter(m => m !== prev);
+
+  // los z ważonej puli
+  mode = pool[Math.floor(Math.random() * pool.length)];
+
+  modeSince = performance.now();
+  jumpOffset = 0;
+  nextJumpAt = rand(1500, 3500);
     if (mode === "UNITS"){
       // goofy ahh jednostki + skala
       const choices = [
@@ -85,11 +90,11 @@
         {name:"hyperquantum-seconds", scale: 1e-6},
         {name:"hold on lol idk whats ts", scale: 2.71828},
         {name:"polskie 🇵🇱 sekundy, thats crazy...", scale: 1/1800},
-      ];
-      unit = choices[rint(0, choices.length-1)];
-    } else {
-      unit = { name: "seconds", scale: 1 };
-    }
+ ];
+    unit = choices[Math.floor(Math.random()*choices.length)];
+  } else {
+    unit = { name: "seconds", scale: 1 };
+  }
     if (!initial) {
       // podpowiedzi dla szanownego uzytkownika ze cos jest CHYBA nie tak
       hint.textContent = ["Idk how to fix ts, sorry gang 🙏", "Calculate the square quantinum of the current second on my EVIL calc 🙏", "We left the Omniverse now, can we stop?", "what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts", "Harvard look at my timer, can yall accept me now?", "you just left time's archiverse, what now lol", "hold on i think i know whats wrong", "nah i made it worse 💔", "i think we can stop studying now...? 🙏"][rint(0,4)];
