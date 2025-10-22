@@ -110,3 +110,44 @@ button.span-2 { grid-column: span 2; }
   .content{ margin: 0; padding: 16px; }
   .calc{ width: 100%; }
 }
+
+/* ---- rząd narzędzi (kalkulator + historia) ---- */
+.tools-row{
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* panel historii */
+.history{
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  max-height: 520px;
+  overflow: auto;
+}
+.history h2{
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+#historyList{
+  margin: 0;
+  padding-left: 20px; /* dla numeracji ol */
+}
+#historyList li{
+  margin: 6px 0;
+  color: var(--text);
+  word-break: break-word;
+  line-height: 1.25;
+  opacity: .95;
+}
+
+/* responsywka */
+@media (max-width: 900px){
+  .tools-row{ grid-template-columns: 1fr; }
+  .history{ max-height: none; }
+}
+
