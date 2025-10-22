@@ -310,4 +310,47 @@ button.span-2 { grid-column: span 2; }
   .playground{ height: 300px; }
 }
 
+/* CLICKER — upgrades */
+.score{ font-weight:800; font-size: 2rem; letter-spacing:.3px; }
+.playground{ height: 520px; } /* większa arena */
+
+/* arena shake */
+.playground.shake { animation: shakey .35s linear 1; }
+@keyframes shakey{
+  0%,100%{ transform: translate(0,0); }
+  20%{ transform: translate(-4px,2px) rotate(-0.3deg); }
+  40%{ transform: translate(4px,-3px) rotate(0.4deg); }
+  60%{ transform: translate(-3px,3px) rotate(-0.2deg); }
+  80%{ transform: translate(3px,-2px) rotate(0.3deg); }
+}
+
+/* button trail (ghost afterimage) */
+.btn-trail::after{
+  content:""; position:absolute; inset:0; border-radius:14px;
+  background: rgba(255,255,255,.08);
+  filter: blur(8px);
+  transform: translate(6px,6px); pointer-events:none;
+}
+
+/* flying distractions cuz i woant you to get epilepsy */
+.fly{
+  position:absolute; opacity:.9; user-select:none; pointer-events:none;
+  animation: floatUp 3.5s linear forwards;
+  font-size: 18px;
+}
+@keyframes floatUp{
+  from{ transform: translateY(30px); opacity:.9; }
+  to  { transform: translateY(-160px); opacity:0; }
+}
+
+/* ghost decoy button */
+.btn-ghostfake{
+  position:absolute; padding: 12px 14px; border-radius: 10px; border:0;
+  background:#9ca3af; color:#111827; opacity:.85; cursor: pointer;
+}
+
+/* bounce path helper (for freaky MISCHIEF.BOUNCE) */
+.btn-bounce{ will-change: left, top; }
+
+
 
