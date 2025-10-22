@@ -68,7 +68,7 @@
     rafLoop();
   }
 
-  // wybór / rotacja trybu co 10 s zeby nie bylo tego samego caly czas
+  // wybór / rotacja trybu co 4s zeby nie bylo tego samego caly czas
   function pickMode(initial=false){
     const prev = mode;
     const pool = modes.filter(m => m !== prev); // bez powtórki z rzędu bo nudno
