@@ -12,13 +12,13 @@ window.addEventListener("DOMContentLoaded", () => {
   // ---- STAN ----
   let curr = "0";          // wpisywana liczba
   let op = null;           // + - * /
-  let prevStr = null;      // lewy operand (dla -,*,/)
+  let prevStr = null;      // lewy operand hche mi sie spac (dla -,*,/)
   let justEvaluated = false;
-  let addSeq = [];         // sekwencja dla +
+  let addSeq = [];         // tutaj yyy sekwencja dla +
 
   const opSymbol = { "+": "+", "-": "−", "*": "×", "/": ":" };
 
-  // losowe teksty
+  // losowe teksty bruuh
   const multLines = [
     "6… maybe 7… 67…",
     "If i had to guess… 67?",
@@ -67,7 +67,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---- HISTORIA ----
+  // ---- HISTORIA CHCE MI SIE SPAC ----
   function addHistory(expr, res) {
     if (!historyList) return;
     const li = document.createElement("li");
@@ -91,7 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function setOperator(nextOp) {
-    // zmiana operatora bez wpisania drugiego operandu
+    // zmiana operatora bez wpisania drugiego operandu bo na to jestem za leniwa
     if (op && curr === "0" && !justEvaluated) {
       op = nextOp;
       rebuildDisplayWhileTyping();
@@ -108,7 +108,7 @@ window.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // kończymy ewentualną sekwencję +
+    // koncz tutahj ewentualną sekwencję + jakbys nie wiedzia variacie
     if (op === "+") {
       prevStr = addSeq.join("");
       addSeq = [];
@@ -128,7 +128,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const parts = [...addSeq];
       if (!justEvaluated) parts.push(curr);
       expr = parts.join(" + ");
-      result = parts.join("");    // sklejka w kolejności
+      result = parts.join("");    // sklejka w kolejnosci
       // reset
       addSeq = [];
       op = null; prevStr = null; curr = String(result); justEvaluated = true;
