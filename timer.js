@@ -1,5 +1,5 @@
-// Timer z chaosem: co 10 s zmienia "fikus" (tryb wyświetlania)
-// - logika czasu bazuje na realnym upływie (elapsed), ale prezentacja bywa oszukana
+// Timer z chaosem: co 10 s zmienia sie bu tak lubie (tryb wyświetlania)
+// - logika czasu bazuje na realnym upływie (elapsed), ale wyswietlanie jest zjebane
 (() => {
   const el = (id) => document.getElementById(id);
 
@@ -16,7 +16,7 @@
 
   // --- stan zegara (prawda) ---
   let total = 30;               // sekundy docelowe
-  let startTs = 0;              // performance.now() przy starcie
+  let startTs = 0;              // performance.now() przy starcie yy stopera
   let pausedAt = 0;             // ms od startu do pauzy
   let running = false;
 
@@ -24,11 +24,11 @@
   const modes = ["ACCEL","SLOW","JUMP","REVERSE","UNITS"];
   let mode = "ACCEL";
   let modeSince = 0;            // ms odkąd wybrano tryb
-  let jumpOffset = 0;           // sekundy (±) dla JUMP
+  let jumpOffset = 0;           // sekundy (±) dla JUMP (jump to ja zaraz z balkonu)
   let nextJumpAt = 0;           // ms od początku trybu do kolejnego skoku
-  let unit = { name: "sekundy", scale: 1 }; // dla UNITS
+  let unit = { name: "seconds", scale: 1 }; // dla UNITS
 
-  // losowe pomocnicze
+  // losowe pomocnicze zeby nie walnelo
   const rand = (a,b) => Math.random()*(b-a)+a;
   const rint = (a,b) => Math.floor(rand(a,b+1));
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
@@ -68,54 +68,54 @@
     rafLoop();
   }
 
-  // wybór / rotacja trybu co 10 s
+  // wybór / rotacja trybu co 10 s zeby nie bylo tego samego caly czas
   function pickMode(initial=false){
     const prev = mode;
-    const pool = modes.filter(m => m !== prev); // bez powtórki z rzędu
+    const pool = modes.filter(m => m !== prev); // bez powtórki z rzędu bo nudno
     mode = pool[rint(0, pool.length-1)];
     modeSince = performance.now();
     jumpOffset = 0;
     nextJumpAt = rand(1500, 3500);
     if (mode === "UNITS"){
-      // śmieszne jednostki + skala
+      // goofy ahh jednostki + skala
       const choices = [
-        {name:"nanosekundy", scale: 1e9},
+        {name:"nanoseconds", scale: 1e9},
         {name:"faux-seconds", scale: 0.73},
-        {name:"lata świetlne", scale: 1/ (60*60*24*365 * 3.154e7) }, // totalnie bez sensu
-        {name:"mega-sekundy", scale: 1e-6},
-        {name:"chwileczki", scale: 2.71828},
-        {name:"kawusie", scale: 1/1800},
+        {name:"light years (Thats crazy! 🤯)", scale: 1/ (60*60*24*365 * 3.154e7) }, // totalnie bez sensu
+        {name:"hyperquantum-seconds", scale: 1e-6},
+        {name:"hold on lol", scale: 2.71828},
+        {name:"thats crazy...", scale: 1/1800},
       ];
       unit = choices[rint(0, choices.length-1)];
     } else {
-      unit = { name: "sekundy", scale: 1 };
+      unit = { name: "seconds", scale: 1 };
     }
     if (!initial) {
-      // nie zdradzamy szczegółów, ale lekka podpowiedź ;)
-      hint.textContent = ["hmm…","dziwnie szybko…","co tu się…","okej?","no to lecimy"][rint(0,4)];
+      // podpowiedzi dla szanownego uzytkownika ze cos jest CHYBA nie tak
+      hint.textContent = ["what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts","you just left time's archiverse, what now lol"][rint(0,4)];
     }
   }
 
-  // mapping: trueRemaining -> displayedRemaining (w sekundach)
+  // mapping: trueRemaining -> displayedRemaining (w sekundach no a wczym)
   function mapByMode(trueRem){
     const elapsed = getElapsedMs();            // ms od startu (z pauzami)
     const tMode = performance.now() - modeSince;
-    const f = 1 - trueRem/total;               // realny ułamek postępu [0..1]
+    const f = 1 - trueRem/total;               // yyy ulamek postępu [0..1]
 
     switch(mode){
       case "ACCEL": {
-        // coraz szybciej: mnożnik rośnie kwadratowo
+        // coraz szybciej: mnożnik rośnie kwadratowo bo tak lubie
         const factor = 1 + 3 * Math.pow(tMode/10000, 2); // ~1..4+
         const f2 = clamp(f * factor, 0, 1);
         return total * (1 - f2);
       }
       case "SLOW": {
-        // zwalnia: potęgowanie utrudnia dojście do 1
+        // zwalnia: potęgowanie utrudnia dojście do 1 bo tak lubie
         const f2 = Math.pow(f, 1.8);
         return total * (1 - f2);
       }
       case "JUMP": {
-        // co parę sekund skok ± (1..10%) total
+        // co parę sekund skok plus jakies (1..10%)
         if (tMode >= nextJumpAt){
           const delta = (Math.random() < 0.5 ? -1 : 1) * total * rand(0.01, 0.10);
           jumpOffset = clamp(jumpOffset + delta, -total*0.3, total*0.3);
@@ -125,13 +125,13 @@
         return rem;
       }
       case "REVERSE": {
-        // udaje odliczanie, ale "oszukuje" krzywą – znika wolniej, potem szybciej
+        // udaje odliczanie, ale odpierdala krzywej, znika wolniej, potem szybciej xD
         const f2 = clamp( 1 - Math.pow(1 - f, 0.4), 0, 1); // ease-in-out
         return total * (1 - f2);
       }
       case "UNITS": {
-        // wyświetl w absurdalnych jednostkach (tylko prezentacja)
-        return trueRem; // sama wartość zostaje, jednostki zmieniamy niżej
+        // wyświetla w absurdalnych jednostkach (tylko wyswietlanie bo nie bede liczyc  w nanosekundach xD)
+        return trueRem; // sama wartość zostaje, jednostki zmieniam niżej
       }
     }
     return trueRem;
@@ -152,7 +152,7 @@
   }
 
   function writeDisplay(trueRem, displayRem){
-    // pasek (zawsze względem PRAWDY, żeby nie wystrzelił poza)
+    // pasek (zawsze względem PRAWDY, żeby nie wystrzelił poza archiwersum)
     const realFrac = 1 - trueRem/total;
     bar.style.width = `${clamp(realFrac,0,1)*100}%`;
 
@@ -167,7 +167,7 @@
     unitsOut.textContent = unitName;
   }
 
-  // rysowanie
+  // rysowanie turtle ahh
   function rafLoop(){
     if (!running) return;
 
@@ -182,7 +182,7 @@
 
     if (trueRem <= 0){
       running = false;
-      hint.textContent = "KONIEC ✨";
+      hint.textContent = "THE END (you survived gng)";
       return;
     }
     requestAnimationFrame(rafLoop);
@@ -192,7 +192,7 @@
   startBtn.addEventListener("click", () => { start(); });
   pauseBtn.addEventListener("click", () => { pause(); });
   resetBtn.addEventListener("click", () => { reset(); });
-  // klik na timeOut wznawia (mały easter egg)
+  // klik na timeOut wznawia xD
   timeOut.addEventListener("click", () => resume());
 
   // inicjalizacja
