@@ -179,8 +179,10 @@ function pickMode(initial = false){
     const elapsedMs = getElapsedMs();
     const trueRem = clamp(total - elapsedMs/1000, 0, total);
 
-    // zmiana trybu co 10 s
-    if (performance.now() - modeSince >= 4000) pickMode();
+    // zmiana trybu co 4 s
+  // zmiana trybu: UNITS trwa 2× dłużej bo lubie bardziej unca
+const interval = (mode === "UNITS") ? MODE_INTERVAL_MS * 2 : MODE_INTERVAL_MS;
+if (performance.now() - modeSince >= interval) pickMode();
 
     const displayRem = clamp(mapByMode(trueRem), 0, total);
     writeDisplay(trueRem, displayRem);
