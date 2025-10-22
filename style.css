@@ -224,3 +224,90 @@ button.span-2 { grid-column: span 2; }
 }
 .btn-ghost:hover{ color: var(--text); border-color: rgba(255,255,255,.25); }
 
+/* ===== CLICKER ===== */
+.clicker { max-width: 860px; }
+
+.clicker__top{
+  display:flex; gap:16px; justify-content:space-between; align-items:center; margin-bottom:10px;
+}
+.score{ font-weight:700; }
+
+.playground{
+  position: relative;
+  height: 360px;
+  background: #0b1224;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* main red button */
+.btn-main{
+  position: absolute; /* so we can teleport */
+  padding: 16px 22px;
+  border-radius: 14px;
+  border: 0;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: .4px;
+  cursor: pointer;
+  transition: transform .06s ease, filter .2s, background .2s, opacity .2s, left .15s, top .15s;
+  user-select: none;
+}
+.btn-main:active{ transform: scale(.98) }
+
+/* disabled (true block) */
+.btn-disabled{
+  background: #6b7280 !important;
+  cursor: not-allowed !important;
+  opacity: .8;
+}
+
+/* fake blocked (cursor not-allowed but still clickable) */
+.btn-fakeblocked{
+  cursor: not-allowed !important;
+  filter: grayscale(.1) brightness(.95);
+}
+
+/* rainbow glow */
+.btn-rainbow{
+  animation: rainbowGlow 1.2s linear infinite;
+  box-shadow: 0 0 20px rgba(0,0,0,.4);
+}
+@keyframes rainbowGlow{
+  0%{ filter: hue-rotate(0deg) brightness(1.1); }
+  100%{ filter: hue-rotate(360deg) brightness(1.1); }
+}
+
+/* helicopter spin */
+.btn-spin{
+  animation: heli 1.2s ease-in-out 1;
+}
+@keyframes heli{
+  0%{ transform: rotate(0deg) scale(1); }
+  50%{ transform: rotate(540deg) scale(1.1); }
+  100%{ transform: rotate(720deg) scale(1); }
+}
+
+/* decoy buttons wrapper */
+.decoys{
+  position: absolute;
+  top: 12px; right: 12px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.btn-decoy{
+  padding: 12px 14px; border-radius: 10px; border:0; cursor:pointer;
+  font-weight: 700;
+}
+.btn-decoy.green{ background:#10b981; color:#052016; }
+.btn-decoy.red{ background:#ef4444; color:#fff; }
+
+/* ensure teleports stay inside nicely on small screens */
+@media (max-width: 520px){
+  .playground{ height: 300px; }
+}
+
+
