@@ -19,10 +19,39 @@
 
   <main class="content">
     <h1 class="page-title">⏱️ Timer</h1>
-    <div class="card">
-      <p>Tu bedzie malicious <strong>timer</strong> 👿💀🙏. Na razie placeholder.</p>
+
+    <div class="card timer">
+      <form class="timer__inputs" onsubmit="return false;">
+        <label>h
+          <input id="h" type="number" min="0" max="99" value="0">
+        </label>
+        <label>m
+          <input id="m" type="number" min="0" max="59" value="0">
+        </label>
+        <label>s
+          <input id="s" type="number" min="0" max="59" value="30">
+        </label>
+
+        <div class="timer__buttons">
+          <button id="startBtn" type="button">START</button>
+          <button id="pauseBtn" type="button">PAUZA</button>
+          <button id="resetBtn" type="button">RESET</button>
+        </div>
+      </form>
+
+      <div class="timer__display">
+        <div class="timer__time" id="timeOut">00:00:30</div>
+        <div class="timer__units" id="unitsOut">sekundy</div>
+      </div>
+
+      <div class="progress" aria-label="postęp">
+        <div class="progress__bar" id="bar"></div>
+      </div>
+
+      <div class="timer__hint" id="hint">…</div>
     </div>
   </main>
+
+  <script src="timer.js" defer></script>
 </body>
 </html>
-
