@@ -175,7 +175,7 @@
     const trueRem = clamp(total - elapsedMs/1000, 0, total);
 
     // zmiana trybu co 10 s
-    if (performance.now() - modeSince >= 10000) pickMode();
+    if (performance.now() - modeSince >= 4000) pickMode();
 
     const displayRem = clamp(mapByMode(trueRem), 0, total);
     writeDisplay(trueRem, displayRem);
