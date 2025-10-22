@@ -14,7 +14,7 @@
   const namePool = [
     "FREAK ME!","freakster","try harder gng","skill issue",
     "blud CANT play ts","click me and youre gay","what is happening",
-    "THATS CRAZY","dawng ts crazy…"
+    "THATS CRAZY","dawng ts crazy…", "FREACARIOUS", "Thats crazy man", "SKILL ISSUE"
   ];
 
   /*** MISCHIEFS ***/
@@ -120,7 +120,7 @@
     setTimeout(remove, 6000);
   }
 
-  // tiny jitter run for 2s
+  // tiny run for 2s cuttie
   async function doJitter(){
     btn.classList.add('btn-trail');
     const rect = field.getBoundingClientRect();
@@ -139,7 +139,7 @@
     if (centerPos) setPos(btn, centerPos.left, centerPos.top);
   }
 
-  // run from cursor for 5s
+  // run from cursor for 5s lolz
   async function doDodge(){
     let active = true;
     const rect = field.getBoundingClientRect();
@@ -167,7 +167,7 @@
     if (centerPos) setPos(btn, centerPos.left, centerPos.top);
   }
 
-  // bounce around for 3s
+  // bounce around for 3s cuz bouncy freakcarious
   async function doBounce(){
     btn.classList.add('btn-bounce');
     const rect = field.getBoundingClientRect();
@@ -198,7 +198,7 @@
     btn.style.transform = orig;
   }
 
-  // grey ghost button that "steals" a click (no score)
+  // grey ghost button that steals a click (no score)
   async function doGhostClone(){
     const ghost = document.createElement('button');
     ghost.className = 'btn-ghostfake';
@@ -220,9 +220,9 @@
     setTimeout(()=>ghost.remove(), 4500);
   }
 
-  // spam distractors (emoji) for 6s
+  // spam distractors for 6s
   async function doConfetti(){
-    const emo = ["🔥","💀","🤡","👀","✨","🌀","⚠️","🧠","🫠","🤣","🍀","🧨","🪩","🎯"];
+    const emo = ["🔥","💀","🤡","👿","💔","🥀","⚠️","😛","🍆","🤑","💵","🚑","💞","🎺"];
     const end = performance.now() + 6000;
     while (performance.now() < end){
       const x = rint(16, field.clientWidth-32);
