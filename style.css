@@ -1,3 +1,5 @@
+
+
 @font-face {
   font-family: 'PapyrusCustom';
   src: url('fonts/papyrus.ttf') format('truetype');
@@ -195,4 +197,30 @@ button.span-2 { grid-column: span 2; }
 }
 
 .timer__hint{ margin-top: 10px; color: var(--text-dim); font-size: .9rem; }
+
+/* nav separator (thin, subtle line) */
+.nav-sep{
+  height: 1px;
+  background: rgba(255,255,255,.08);
+  margin: 6px 0 10px 0;
+  border-radius: 1px;
+}
+
+/* small helpers for achievements list */
+.muted{ color: var(--text-dim); }
+.ach-list{ list-style: none; padding: 0; margin: 0; }
+.ach-list li{
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,.06);
+}
+.ach-list li:last-child{ border-bottom: 0; }
+.ach-name{ color: var(--text); }
+.ach-code{ color: var(--text-dim); font-size: .85rem; }
+.ach-actions{ margin-top: 12px; }
+.btn-ghost{
+  background: transparent; color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 8px 12px; border-radius: 10px; cursor: pointer;
+}
+.btn-ghost:hover{ color: var(--text); border-color: rgba(255,255,255,.25); }
 
