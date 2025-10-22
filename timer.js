@@ -97,7 +97,7 @@ function pickMode(initial = false){
   }
     if (!initial) {
       // podpowiedzi dla szanownego uzytkownika ze cos jest CHYBA nie tak
-      hint.textContent = ["Idk how to fix ts, sorry gang 🙏", "Calculate the square quantinum of the current second on my EVIL calc 🙏", "We left the Omniverse now, can we stop?", "what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts", "Harvard look at my timer, can yall accept me now?", "you just left time's archiverse, what now lol", "hold on i think i know whats wrong", "nah i made it worse 💔", "i think we can stop studying now...? 🙏"][rint(0,4)];
+      hint.textContent = ["Idk how to fix ts, sorry gang 🙏", "how is it going so far?", "Congratufuckinglations: You deleted quantum time! Thats Crazy!", "Calculate the square quantinum of the current second on my EVIL calc 🙏", "We left the Omniverse now, can we stop?", "what do we have here ahh","Thats CRAZY 🤯","what is happening","alr hold on ima fix ts", "Harvard look at my timer, can yall accept me now?", "you just left time's archiverse, what now lol", "hold on i think i know whats wrong", "nah i made it worse 💔", "i think we can stop studying now...? 🙏"][rint(0,4)];
     }
   }
 
