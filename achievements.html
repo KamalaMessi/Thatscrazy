@@ -43,7 +43,7 @@
     // === Local achievements (per browser) ===
     const KEY = 'tc_achievements_v1';
 
-    // Optional starter pool (used only for demo/testing via console)
+    // Optional starter pool (used only for demo/testing on console if i ever shivertimbers smth up)
     const defaultPool = [
       { code:'first-open', name:'First Visit' },
       { code:'click-10',   name:'10 Clicks' },
@@ -61,7 +61,7 @@
 
     function renderAch() {
       const ul = document.getElementById('achList');
-      const list = loadAch().sort((a,b) => a.ts - b.ts); // oldest → newest
+      const list = loadAch().sort((a,b) => a.ts - b.ts); // oldest to the newest
       ul.innerHTML = list.length
         ? list.map(a => `
             <li>
@@ -80,16 +80,16 @@
       }
     }
 
-    // Expose a minimal API (so you can call from console on this page)
+    // Expose a minimal API (so you can call from console on this page lol)
     window.grantAchievement = grantAchievement;
 
-    // Hook up reset
+    // Hook up reset ):
     document.getElementById('resetBtn').addEventListener('click', () => {
       localStorage.removeItem(KEY);
       renderAch();
     });
 
-    // Render on load
+
     renderAch();
   </script>
 </body>
