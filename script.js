@@ -1,53 +1,87 @@
 window.addEventListener("DOMContentLoaded", () => {
   const screen = document.getElementById("screen");
   const keys = document.querySelector(".keys");
+  const historyList = document.getElementById("historyList");
 
   if (!keys || !screen) {
-    console.error("Nie znaleziono .keys albo #screen — sprawdź HTML.");
+    console.error("Nie znaleziono .keys albo #screen");
     if (screen) screen.textContent = "Błąd: brak .keys / #screen";
     return;
   }
 
-  // --- STAN ---
-  let curr = "0";          // aktualnie wpisywana liczba (string)
-  let op = null;           // bieżący operator: + - * /
-  let prevStr = null;      // poprzedni operand jako string (dla -,*,/)
+  // ---- STAN ----
+  let curr = "0";          // wpisywana liczba
+  let op = null;           // + - * /
+  let prevStr = null;      // lewy operand (dla -,*,/)
   let justEvaluated = false;
+  let addSeq = [];         // sekwencja dla +
 
-  // specjalna kolejka tylko dla +
-  let addSeq = [];         // ["4","5","6"] => wynik "456"
+  const opSymbol = { "+": "+", "-": "−", "*": "×", "/": ":" };
 
-  // mapowanie symboli do wyświetlania na pasku
-  const opSymbol = {
-    "+": "+",
-    "-": "−",
-    "*": "×",
-    "/": " : "
-  };
+  // losowe teksty
+  const multLines = [
+    "6… maybe 7… 67…",
+    "If i had to guess… 67?",
+    "Prolly 67 gang ❤️",
+    "Going all in on 67 🤑🎰",
+    "I bet 1$ on 67, so its 67",
+    "Tbh prolly 67 idk",
+    "Its 67 trust me gng ❤️",
+    "Evil 67 👿",
+    "Its 67 trust me broteinshake 🙏",
+    "6…7? 67…",
+    "Its NOT 67 👿",
+    "Prolly 67 but im not sure",
+    "I bet 67¥ on 67",
+    "Imagine if it was 67"
+  ];
+  const divLines = [
+    "Idk bro 💀🙏",
+    "Count it urself 💀",
+    "It CANT be that hard 💔",
+    "Idk, use ChatGPT 🙏",
+    "You think i know?",
+    "Hold on ima check",
+    "Prolly a MASSIVE number",
+    "Thats enough for you 👿",
+    "ChatGPT is free vro 🙏",
+    "Prolly smth EVIL 👿",
+    "Not a clue man"
+  ];
 
-  // --- WIDOK ---
-  function show(text) { screen.textContent = text; }
-  function showCurr() { show(curr); }
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  // ---- WIDOK ----
+  const show = t => screen.textContent = t;
 
   function rebuildDisplayWhileTyping(nextPart = "") {
-    // Buduje pasek działania podczas pisania drugiego (i dalszych) operandów
     if (op === "+") {
       const base = addSeq.join(" + ");
-      if (nextPart) show(`${base} + ${nextPart}`);
-      else show(`${base} +`);
+      show(nextPart ? `${base} + ${nextPart}` : `${base} +`);
     } else if (op && prevStr != null) {
       const sym = opSymbol[op] ?? op;
-      if (nextPart) show(`${prevStr}${sym}${nextPart}`);
-      else show(`${prevStr}${sym}`);
+      show(nextPart ? `${prevStr} ${sym} ${nextPart}` : `${prevStr} ${sym}`);
     } else {
-      showCurr();
+      show(curr);
     }
   }
 
-  // --- LOGIKA ---
+  // ---- HISTORIA ----
+  function addHistory(expr, res) {
+    if (!historyList) return;
+    const li = document.createElement("li");
+    li.textContent = `${expr} = ${res}`;
+    historyList.prepend(li);           // najnowsze na górze
+    // max 10 wpisów
+    while (historyList.children.length > 10) {
+      historyList.lastElementChild.remove();
+    }
+  }
+
+  // ---- LOGIKA ----
   function inputNumber(n) {
     if (justEvaluated) { curr = "0"; justEvaluated = false; }
-
     if (n === ".") {
       if (!curr.includes(".")) curr += ".";
       return rebuildDisplayWhileTyping(curr);
@@ -57,122 +91,96 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function setOperator(nextOp) {
-    // Jeśli już mieliśmy operator i nic nie wpisano po nim, tylko podmień operator
+    // zmiana operatora bez wpisania drugiego operandu
     if (op && curr === "0" && !justEvaluated) {
       op = nextOp;
-      rebuildDisplayWhileTyping(); // zaktualizuj symbol
+      rebuildDisplayWhileTyping();
       return;
     }
 
     if (nextOp === "+") {
-      // Inicjalizacja/rozszerzanie kolejki dodawania
-      if (op !== "+") {
-        // start sekwencji +
-        addSeq = [curr];
-      } else {
-        // kontynuacja sekwencji +
-        addSeq.push(curr);
-      }
+      if (op !== "+") addSeq = [curr]; else addSeq.push(curr);
       curr = "0";
       op = "+";
-      prevStr = null; // nieużywane dla +
-      rebuildDisplayWhileTyping(); // pokaż "a +"
+      prevStr = null;
+      rebuildDisplayWhileTyping();
       justEvaluated = false;
       return;
     }
 
-    // Dla -,*,/ zakończ ewentualną sekwencję +
+    // kończymy ewentualną sekwencję +
     if (op === "+") {
-      // przechodzimy z + na inny operator: 'sklejamy' wyświetlanie bazowe
-      // ale nie wyliczamy nic — tylko zamykamy sekwencję wejściem w zwykły tryb
-      // Traktujemy dotychczasowe części jako jeden lewy operand do nowego operatora
       prevStr = addSeq.join("");
       addSeq = [];
     } else {
       prevStr = curr;
     }
-
     curr = "0";
     op = nextOp;
     justEvaluated = false;
-    rebuildDisplayWhileTyping(); // pokaż "A op"
-  }
-
-  function randInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    rebuildDisplayWhileTyping();
   }
 
   function evaluate() {
-    let result;
+    let result, expr;
 
     if (op === "+") {
-      // dołóż ostatni wpisany operand i sklej w kolejności
       const parts = [...addSeq];
       if (!justEvaluated) parts.push(curr);
-      result = parts.join("");
-      // czyścimy stan
+      expr = parts.join(" + ");
+      result = parts.join("");    // sklejka w kolejności
+      // reset
       addSeq = [];
-      op = null;
-      curr = String(result);
-      prevStr = null;
-      justEvaluated = true;
-      show(curr); // pokaż wynik
+      op = null; prevStr = null; curr = String(result); justEvaluated = true;
+      show(curr);
+      addHistory(expr, result);
       return;
     }
 
-    if (!op || (prevStr == null)) {
-      // brak działania do policzenia – po prostu pokaż bieżący wpis
-      showCurr();
+    if (!op || prevStr == null) {
+      show(curr);
       return;
     }
 
-    // Specjalne wyniki dla -,*,/
+    expr = `${prevStr} ${opSymbol[op] ?? op} ${curr}`;
     switch (op) {
       case "-":
         result = `${randInt(-100, 100)} i think`;
         break;
       case "*":
-        result = "6... maybe 7... 67...";
+        result = pick(multLines);
         break;
       case "/":
-        result = "Idk bro 💀🙏";
+        result = pick(divLines);
         break;
       default:
         result = curr;
     }
 
-    // reset stanu i pokaż wynik
-    op = null;
-    addSeq = [];
-    curr = String(result);
-    prevStr = null;
-    justEvaluated = true;
+    op = null; addSeq = []; prevStr = null; curr = String(result); justEvaluated = true;
     show(curr);
+    addHistory(expr, result);
   }
 
   function clearAll() {
     curr = "0"; op = null; prevStr = null; addSeq = []; justEvaluated = false;
-    showCurr();
+    show(curr);
   }
-
   function backspace() {
     if (justEvaluated) { curr = "0"; justEvaluated = false; }
     curr = curr.length > 1 ? curr.slice(0, -1) : "0";
     rebuildDisplayWhileTyping(curr);
   }
-
   function percent() {
-    // zachowujemy normalne % na bieżącej liczbie
     const n = parseFloat(curr);
     if (!isNaN(n)) curr = String(n / 100);
     rebuildDisplayWhileTyping(curr);
   }
 
-  // --- ZDARZENIA ---
+  // ---- ZDARZENIA ----
   keys.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
-
     if (btn.dataset.num) return inputNumber(btn.dataset.num);
     if (btn.dataset.op) return setOperator(btn.dataset.op);
 
@@ -192,7 +200,5 @@ window.addEventListener("DOMContentLoaded", () => {
     if (e.key === "%") percent();
   });
 
-  // start
-  showCurr();
+  show(curr);
 });
-
