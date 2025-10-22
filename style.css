@@ -151,3 +151,48 @@ button.span-2 { grid-column: span 2; }
   .history{ max-height: none; }
 }
 
+/* ===== TIMER ===== */
+.timer { max-width: 680px; }
+
+.timer__inputs{
+  display: grid;
+  grid-template-columns: repeat(3, 80px) 1fr;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+.timer__inputs label{
+  display: grid; gap: 6px; color: var(--text-dim); font-size: .9rem;
+}
+.timer__inputs input{
+  width: 100%; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: #0b1224; color: var(--text);
+}
+.timer__buttons{ display: flex; gap: 8px; justify-content: flex-end; }
+.timer__buttons button{
+  background: var(--muted); color: var(--text);
+  border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer;
+}
+.timer__buttons button:hover{ opacity:.9; }
+.timer__display{
+  display: flex; align-items: baseline; gap: 10px; margin: 8px 0 12px;
+}
+.timer__time{
+  font-variant-numeric: tabular-nums;
+  font-size: 2.2rem; font-weight: 700;
+}
+.timer__units{ color: var(--text-dim); }
+
+.progress{
+  height: 14px; background: #0b1224; border-radius: 999px; overflow: hidden;
+  outline: 1px solid rgba(255,255,255,.08);
+}
+.progress__bar{
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg,#2563eb,#60a5fa);
+  transition: width .2s linear;
+}
+
+.timer__hint{ margin-top: 10px; color: var(--text-dim); font-size: .9rem; }
+
