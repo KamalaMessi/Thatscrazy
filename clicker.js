@@ -114,12 +114,11 @@
     const green = document.createElement('button'); green.className='btn-decoy green'; green.textContent="Do NOT touch me";
     const red   = document.createElement('button'); red.className='btn-decoy red';   red.textContent="FREAK ME!";
     const remove = ()=>{ green.remove(); red.remove(); };
-   green.onclick = () => {
+  green.onclick = () => {
   if (score >= 200 && window.ACH) ACH.unlock('clicker_reset200');
-  score = 0;
-  updateScore();
-  shake();
-  remove();
+  score = 0; updateScore(); shake(); remove();
+};
+  
 };
 
     red.onclick   = ()=>{ doMainClick(); remove(); };
