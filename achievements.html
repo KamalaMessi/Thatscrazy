@@ -9,7 +9,9 @@
 <body>
   <aside class="sidebar">
     <div class="brand">thatscrazy.lol</div>
+
     <nav class="nav">
+      <!-- Achievements on top -->
       <a href="achievements.html" class="nav-link active">🏆 Achievements</a>
       <div class="nav-sep" aria-hidden="true"></div>
 
@@ -17,6 +19,7 @@
       <a href="timer.html" class="nav-link">⏱️ Timer</a>
       <a href="clicker.html" class="nav-link">🖱️ Clicker</a>
     </nav>
+
     <div class="foot">made to be wrong™</div>
   </aside>
 
@@ -24,74 +27,70 @@
     <h1 class="page-title">🏆 Achievements</h1>
 
     <div class="card">
-      <p class="muted" id="achCounter">Achievements gained: 0/0</p>
+      <p class="muted">
+        This browser keeps your achievements locally (no sync across devices).
+      </p>
 
-      <section class="ach-section">
-        <h3>Clicker</h3>
-        <ul class="ach-list" id="list-clicker"></ul>
-      </section>
+      <ul id="achList" class="ach-list"></ul>
 
-      <section class="ach-section">
-        <h3>Calculator</h3>
-        <ul class="ach-list" id="list-calculator"></ul>
-      </section>
-
-      <section class="ach-section">
-        <h3>Timer</h3>
-        <ul class="ach-list" id="list-timer"></ul>
-      </section>
+      <div class="ach-actions">
+        <button id="resetBtn" class="btn-ghost">Reset all</button>
+      </div>
     </div>
   </main>
 
-  <script src="achievements.js" defer></script>
   <script>
-    function render(){
-      const all = ACH.all();
-      const byCat = { clicker:[], calculator:[], timer:[] };
-      all.forEach(a => (byCat[a.category] || (byCat[a.category]=[])).push(a));
+    // === Local achievements (per browser) ===
+    const KEY = 'tc_achievements_v1';
 
-      const makeLi = (a) => {
-        const unlocked = ACH.isUnlocked(a.id);
-        const li = document.createElement('li');
-        li.className = unlocked ? 'ach unlocked' : 'ach locked';
-        li.dataset.id = a.id;
+    // Optional starter pool
+    const defaultPool = [
+      { code:'first-open', name:'First Visit' },
+      { code:'click-10',   name:'10 Clicks' },
+      { code:'math-fail',  name:'Legendary 67' },
+      { code:'timer-gg',   name:'Timer Finished' },
+    ];
 
-        const icon = document.createElement('span');
-        icon.className = 'ach-ico';
-        if (a.icon === 'btn-green') {
-          icon.classList.add('btn-green-mini');
-          icon.textContent = 'Do NOT touch me';
-        } else {
-          icon.textContent = a.icon || '🏆';
-        }
-
-        const text = document.createElement('div');
-        text.className = 'ach-text';
-        text.innerHTML = `<div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc||''}</div>`;
-
-        li.appendChild(icon);
-        li.appendChild(text);
-        return li;
-      };
-
-      const mount = (id, arr) => {
-        const ul = document.getElementById(id);
-        ul.innerHTML = '';
-        arr.forEach(a => ul.appendChild(makeLi(a)));
-      };
-
-      mount('list-clicker', byCat.clicker || []);
-      mount('list-calculator', byCat.calculator || []);
-      mount('list-timer', byCat.timer || []);
-
-      const { have, total } = ACH.stats();
-      document.getElementById('achCounter').textContent = `Achievements gained: ${have}/${total}`;
+    function loadAch() {
+      try { return JSON.parse(localStorage.getItem(KEY)) || []; }
+      catch { return []; }
+    }
+    function saveAch(list) {
+      localStorage.setItem(KEY, JSON.stringify(list));
     }
 
-    // Re-render when something unlocks (if this page is open)
-    window.addEventListener('ach:unlocked', () => render());
+    function renderAch() {
+      const ul = document.getElementById('achList');
+      const list = loadAch().sort((a,b) => a.ts - b.ts); // oldest to newest
+      ul.innerHTML = list.length
+        ? list.map(a => `
+            <li>
+              <span class="ach-name">✅ ${a.name}</span>
+              <span class="ach-code">(${a.code})</span>
+            </li>`).join('')
+        : '<li class="muted">No achievements… yet 😉</li>';
+    }
 
-    document.addEventListener('DOMContentLoaded', render);
+    function grantAchievement(code, name) {
+      const list = loadAch();
+      if (!list.some(a => a.code === code)) {
+        list.push({ code, name, ts: Date.now() });
+        saveAch(list);
+        renderAch();
+      }
+    }
+
+    // Expose a minimal API
+    window.grantAchievement = grantAchievement;
+
+    // Hook up reset
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      localStorage.removeItem(KEY);
+      renderAch();
+    });
+
+    // Render on load
+    renderAch();
   </script>
 </body>
 </html>
