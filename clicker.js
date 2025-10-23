@@ -243,8 +243,7 @@
     if (performance.now() < trueBlockedUntil) return;
      
     score++; clicks++; updateScore();
-  if (score >= 1000 && window.ACH) ACH.unlock('clicker_1000');
-
+if (score >= 1000 && window.ACH) ACH.unlock('clicker_1000');
 
     // +1 and tiny floating +1
     score++; clicks++; updateScore();
