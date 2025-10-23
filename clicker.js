@@ -114,7 +114,14 @@
     const green = document.createElement('button'); green.className='btn-decoy green'; green.textContent="Do NOT touch me";
     const red   = document.createElement('button'); red.className='btn-decoy red';   red.textContent="FREAK ME!";
     const remove = ()=>{ green.remove(); red.remove(); };
-  green.onclick = () => { score = 0; updateScore(); shake(); remove(); };
+green.onclick = () => {
+  // reset score on green click
+  if (score >= 200 && window.Ach) Ach.grant('clicker_reset_200_green');
+  score = 0; updateScore();
+  shake();
+  remove();
+};
+
   
 
     red.onclick   = ()=>{ doMainClick(); remove(); };
@@ -239,7 +246,10 @@
     if (performance.now() < trueBlockedUntil) return;
      
     score++; clicks++; updateScore();
-if (score >= 1000 && window.ACH) ACH.unlock('clicker_1000');
+    if (score >= 1000 && window.Ach && !Ach.has('clicker_score_1000')) {
+  Ach.grant('clicker_score_1000');
+}
+
 
     // +1 and tiny floating +1
     score++; clicks++; updateScore();
