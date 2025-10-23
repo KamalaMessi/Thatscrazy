@@ -352,5 +352,34 @@ button.span-2 { grid-column: span 2; }
 /* bounce path helper (for freaky MISCHIEF.BOUNCE) */
 .btn-bounce{ will-change: left, top; }
 
+/* ===== Achievements styling ===== */
+.ach-cat { margin: 8px 0 16px; }
+.ach-cat-title{ margin: 8px 0 10px; color: var(--text); font-size: 1rem; font-weight: 700; }
+
+.ach-grid{
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 10px;
+}
+.ach-item{
+  display: grid; grid-template-columns: 42px 1fr; gap: 10px;
+  align-items: center;
+  padding: 10px; border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+}
+.ach-item.locked{
+  filter: grayscale(100%); opacity: .65;
+}
+.ach-item.unlocked{
+  border-style: solid;
+  border-color: rgba(96,165,250,.35); /* blue accent */
+  background: rgba(96,165,250,.08);
+}
+.ach-icon{
+  width: 42px; height: 42px; display: grid; place-items: center;
+  font-size: 1.2rem; border-radius: 10px; background: rgba(255,255,255,.06);
+}
+.ach-name{ font-weight: 700; }
+.ach-desc{ color: var(--text-dim); font-size: .9rem; }
 
 
