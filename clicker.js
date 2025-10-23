@@ -1,13 +1,4 @@
-// unlock it on load
-btn.classList.remove('btn-disabled');
-trueBlockedUntil = 0;
-btn.addEventListener('click', () => console.debug('freakBtn clicked (debug)'));
-
-
-
-if (!btn) { console.error('No #freakBtn found'); return; }
-  
-      (() => {
+  (() => {
   const $ = sel => document.querySelector(sel);
   const scoreEl = $('#score');
   const field = $('#playground');
@@ -123,12 +114,8 @@ if (!btn) { console.error('No #freakBtn found'); return; }
     const green = document.createElement('button'); green.className='btn-decoy green'; green.textContent="Do NOT touch me";
     const red   = document.createElement('button'); red.className='btn-decoy red';   red.textContent="FREAK ME!";
     const remove = ()=>{ green.remove(); red.remove(); };
-  green.onclick = () => {
-  if (score >= 200 && window.ACH) ACH.unlock('clicker_reset200');
-  score = 0; updateScore(); shake(); remove();
-};
+  green.onclick = () => { score = 0; updateScore(); shake(); remove(); };
   
-};
 
     red.onclick   = ()=>{ doMainClick(); remove(); };
     wrap.append(green, red);
