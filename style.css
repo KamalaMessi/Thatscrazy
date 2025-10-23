@@ -381,3 +381,9 @@ button.span-2 { grid-column: span 2; }
 .ach-text .ach-name{ font-weight: 700; }
 .ach-text .ach-desc{ color: var(--text-dim); font-size: .9rem; margin-top: 2px; }
 
+/* Achievements toasts should never eat clicks */
+#ach_toasts, #ach_toasts * {
+  pointer-events: none !important;
+}
+
+
