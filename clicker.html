@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tools — Clicker</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+  /* Toaster must never intercept clicks */
+  #ach_toasts, #ach_toasts * { pointer-events: none !important; }
+
+  /* The red button must always be clickable and above everything in the arena */
+  .btn-main { z-index: 10; pointer-events: auto !important; }
+  .decoys   { z-index: 9;  pointer-events: auto; }
+</style>
+
 </head>
 <body>
   <aside class="sidebar">
