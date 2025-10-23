@@ -1,4 +1,6 @@
-  (() => {
+if (!btn) { console.error('No #freakBtn found'); return; }
+  
+      (() => {
   const $ = sel => document.querySelector(sel);
   const scoreEl = $('#score');
   const field = $('#playground');
