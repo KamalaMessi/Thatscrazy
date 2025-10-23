@@ -385,5 +385,9 @@ button.span-2 { grid-column: span 2; }
 #ach_toasts, #ach_toasts * {
   pointer-events: none !important;
 }
+/* Safety: clicker layering and pointer behavior */
+.btn-main { z-index: 10; pointer-events: auto !important; }
+.decoys   { z-index: 9;  pointer-events: auto; }
+#ach_toasts, #ach_toasts * { pointer-events: none !important; } /* achievements toasts */
 
 
