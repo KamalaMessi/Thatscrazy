@@ -1,3 +1,10 @@
+// unlock it on load
+btn.classList.remove('btn-disabled');
+trueBlockedUntil = 0;
+btn.addEventListener('click', () => console.debug('freakBtn clicked (debug)'));
+
+
+
 if (!btn) { console.error('No #freakBtn found'); return; }
   
       (() => {
