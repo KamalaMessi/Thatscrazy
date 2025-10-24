@@ -52,7 +52,7 @@
   code: 'clicker_score_10000',
   name: 'Unemployment of doom and despair',
   icon: '💀',
-  desc: 'Reach 10000 score - you used autoclicker, didnt you?.'
+  desc: 'Reach 10000 score - you used autoclicker, didnt you?'
 }
       ]
     }
