@@ -1,6 +1,8 @@
 // Timer z chaosem: co 10 s zmienia sie bu tak lubie (tryb wyświetlania)
 // - logika czasu bazuje na realnym upływie (elapsed), ale wyswietlanie jest zjebane
 (() => {
+  let plannedAtStart = 0; // seconds snapshot when start() is pressed (i think...)
+
   const el = (id) => document.getElementById(id);
 
   const hInp = el("h");
@@ -45,6 +47,7 @@ let unit = { name: "seconds", scale: 1 };
 
   function start(){
     setTotalFromInputs();
+      plannedAtStart = total;
     startTs = performance.now();
     pausedAt = 0;
     running = true;
@@ -174,6 +177,17 @@ function pickMode(initial = false){
 
   // rysowanie turtle ahh
   function rafLoop(){
+    if (trueRem <= 0){
+  running = false;
+  hint.textContent = "THE END (you survived gng)";
+
+  // grant 21:37 if the run started with exactly 21m 37s (1297 sec) (papiez...)
+  if (plannedAtStart === (21*60 + 37) && window.Ach && !Ach.has('timer_21m37s_done')) {
+    Ach.grant('timer_21m37s_done');
+  }
+  return;
+}
+
     if (!running) return;
 
     const elapsedMs = getElapsedMs();
