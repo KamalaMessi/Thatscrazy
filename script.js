@@ -151,6 +151,18 @@ window.addEventListener("DOMContentLoaded", () => {
         result = pick(multLines);
         break;
       case "/":
+        case "/": {
+  // detect 0 ÷ 0
+  const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
+  const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
+  if ((leftStr === "0" || leftStr === "0.0") && (rightStr === "0" || rightStr === "0.0")) {
+    if (window.Ach && !Ach.has('calc_div_zero_zero')) Ach.grant('calc_div_zero_zero');
+  }
+
+  result = pick(divLines);
+  break;
+}
+
         result = pick(divLines);
         break;
       default:
