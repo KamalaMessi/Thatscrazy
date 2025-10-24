@@ -248,6 +248,12 @@ green.onclick = () => {
     score++; clicks++; updateScore();
     if (score >= 1000 && window.Ach && !Ach.has('clicker_score_1000')) {
   Ach.grant('clicker_score_1000');
+      
+if (window.Ach) {
+  if (score >= 1600 && !Ach.has('clicker_score_1600'))   Ach.grant('clicker_score_1600');
+  if (score >= 10000 && !Ach.has('clicker_score_10000')) Ach.grant('clicker_score_10000');
+}
+
 }
 
 
