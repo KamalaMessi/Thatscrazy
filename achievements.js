@@ -9,9 +9,9 @@
       items: [
         {
   code: 'calc_div_zero_zero',
-  name: 'Divide by Nothing',
+  name: 'Are you proud of yourself?',
   icon: '🚫',
-  desc: 'Do 0 ÷ 0 on the calculator.'
+  desc: 'Devide 0 by 0 on the calculator.'
 }
       
       ]
@@ -21,9 +21,9 @@
       items: [
         {
   code: 'timer_21m37s_done',
-  name: '21:37 Endurance',
+  name: '21:37 of silence',
   icon: '⏳',
-  desc: 'Finish a 21:37 timer from start to end.'
+  desc: 'Finish a 21:37 timer from start to end to remember The Pope Jan Paweł II.'
 }
       ]
     },
@@ -32,8 +32,8 @@
       items: [
         {
           code: 'clicker_reset_200_green',
-          name: 'You touched the green one…',
-          icon: '🟩', //  "Do NOT touch me" button
+          name: 'I said dont touch me…',
+          icon: '🟩',
           desc: 'Reset your score with the green button at 200+.'
         },
         {
@@ -44,15 +44,15 @@
         },
         {
   code: 'clicker_score_1600',
-  name: 'Sweaty 1600',
-  icon: '🥵',
-  desc: 'Reach 1600 score in the clicker.'
+  name: 'Zuckerbergs SAT score',
+  icon: '📚',
+  desc: 'Reach perfect SAT score in the clicker.'
 },
 {
   code: 'clicker_score_10000',
-  name: 'Ten Thousand Madness',
-  icon: '🧨',
-  desc: 'Reach 10000 score in the clicker.'
+  name: 'Unemploymentt of doom and despair',
+  icon: '💀',
+  desc: 'Reach 10000 score - you used autoclicker, didnt you?.'
 }
       ]
     }
