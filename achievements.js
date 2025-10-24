@@ -7,15 +7,24 @@
     calculator: {
       title: "Calculator",
       items: [
-        // fill later:
-        // { code: 'calc_first_use', name: 'First Messy Math', icon: '🧮', desc: 'Use the calculator once.' },
+        {
+  code: 'calc_div_zero_zero',
+  name: 'Divide by Nothing',
+  icon: '🚫',
+  desc: 'Do 0 ÷ 0 on the calculator.'
+}
+      
       ]
     },
     timer: {
       title: "Timer",
       items: [
-        // add later:
-        // { code: 'timer_finish', name: 'Timer Finished', icon: '⏱️', desc: 'Let a timer finish.' },
+        {
+  code: 'timer_21m37s_done',
+  name: '21:37 Endurance',
+  icon: '⏳',
+  desc: 'Finish a 21:37 timer from start to end.'
+}
       ]
     },
     clicker: {
@@ -33,6 +42,18 @@
           icon: '🔥',
           desc: 'Reach 1000 score in the clicker.'
         },
+        {
+  code: 'clicker_score_1600',
+  name: 'Sweaty 1600',
+  icon: '🥵',
+  desc: 'Reach 1600 score in the clicker.'
+},
+{
+  code: 'clicker_score_10000',
+  name: 'Ten Thousand Madness',
+  icon: '🧨',
+  desc: 'Reach 10000 score in the clicker.'
+}
       ]
     }
   };
