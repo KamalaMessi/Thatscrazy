@@ -6,7 +6,7 @@
   const remapInEl = document.getElementById('remapIn');
 
   // Physics
-  const g = -0.8;       // gravity (falls...?)
+  const g = -0.8;       // gravity (falls...?).
   const moveSpeed = 3.2;
   const jumpVy = 13.5; //jump velo
   const maxVx = 5;
