@@ -1,23 +1,23 @@
 (() => {
-  // World + DOM
+  // World
   const world = document.getElementById('world');
   const playerEl = document.getElementById('player');
   const legend = document.getElementById('legend');
   const remapInEl = document.getElementById('remapIn');
 
   // Physics
-  const g = -0.8;       // gravity (downwards, pixels/frame^2; negative because we use bottom)
+  const g = -0.8;       // gravity (falls...?)
   const moveSpeed = 3.2;
-  const jumpVy = 13.5;  // initial jump velocity
+  const jumpVy = 13.5; //jump velo
   const maxVx = 5;
 
   const worldRect = () => world.getBoundingClientRect();
 
-  // Player state (bottom/left coordinates in px, velocity in px/frame)
+  // Player state
   let p = { x: 24, y: 24, vx: 0, vy: 0, w: 28, h: 28, onGround: false };
   let keysDown = new Set();
 
-  // Platforms from DOM
+  // Platforms
   const plats = Array.from(world.querySelectorAll('.pf__platform')).map(el => {
     const s = getComputedStyle(el);
     return {
@@ -29,17 +29,17 @@
     };
   });
 
-  // Controls: actions we support
+  // Controls
   const ACTIONS = ['LEFT','RIGHT','JUMP','DOWN'];
   const KEYSET = ['W','A','S','D'];
 
-  // Mapping like { W:'JUMP', A:'LEFT', S:'DOWN', D:'RIGHT' }
+  // Mapping
   let mapping = {};
   let remapEveryMs = 7000;
   let nextRemapAt = performance.now() + remapEveryMs;
 
   function randomMapping(){
-    // random permutation of KEYSET to ACTIONS
+    // random shuffle of bludz
     const shuffled = [...ACTIONS].sort(() => Math.random() - 0.5);
     mapping = { W:shuffled[0], A:shuffled[1], S:shuffled[2], D:shuffled[3] };
     renderLegend();
@@ -55,7 +55,7 @@
     }
   }
 
-  // Input handling
+  // handling
   window.addEventListener('keydown', (e) => {
     const k = e.key.toUpperCase();
     if (!['W','A','S','D'].includes(k)) return;
@@ -70,7 +70,7 @@
   });
 
   function applyInput(){
-    // reset horizontal acceleration each frame
+    // reset
     let ax = 0;
     let wantJump = false;
 
@@ -79,10 +79,10 @@
       if (act === 'LEFT')  ax -= moveSpeed;
       if (act === 'RIGHT') ax += moveSpeed;
       if (act === 'JUMP')  wantJump = true;
-      // DOWN is cosmetic here; you could add drop-through logic if you like
+    
     }
 
-    // horizontal velocity blend
+    
     if (ax !== 0){
       p.vx += ax * 0.08;
     } else {
@@ -100,7 +100,7 @@
   }
 
   function physicsStep(){
-    // gravity
+    // gravity (falls)
     p.vy += g;
 
     // integrate
@@ -113,11 +113,11 @@
     if (p.x < 2){ p.x = 2; p.vx *= -0.3; }
     if (p.x > maxX){ p.x = maxX; p.vx *= -0.3; }
 
-    // collide with platforms (AABB + simple from-top landing)
+    // collide with platforms
     let grounded = false;
     for (const t of plats){
       if (aabb(p.x,p.y,p.w,p.h, t.x,t.y,t.w,t.h)){
-        // resolve vertical first
+        
         if (p.vy <= 0 && (p.y + p.h) >= t.y && (p.y + p.h) <= t.y + 20){
           // landing on top
           p.y = t.y - p.h;
@@ -137,7 +137,7 @@
     }
     p.onGround = grounded;
 
-    // death if falls below bottom
+    // death if falls (gravity falls..?) (i think bro saved the town)
     if (p.y < -120){
       world.classList.add('flash');
       setTimeout(()=>world.classList.remove('flash'), 260);
@@ -159,7 +159,7 @@
   }
 
   function loop(){
-    // remap timer
+    
     const remain = Math.max(0, Math.ceil((nextRemapAt - performance.now())/1000));
     remapInEl.textContent = remain;
     if (performance.now() >= nextRemapAt){
@@ -173,7 +173,7 @@
     requestAnimationFrame(loop);
   }
 
-  // init
+  
   randomMapping();
   nextRemapAt = performance.now() + remapEveryMs;
   requestAnimationFrame(loop);
