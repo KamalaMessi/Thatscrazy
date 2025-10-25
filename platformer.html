@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tools — Platformer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">thatscrazy.lol</div>
+    <nav class="nav">
+      <a href="achievements.html" class="nav-link">🏆 Achievements</a>
+      <div class="nav-sep" aria-hidden="true"></div>
+
+      <a href="index.html" class="nav-link">🧮 Calculator</a>
+      <a href="timer.html" class="nav-link">⏱️ Timer</a>
+      <a href="clicker.html" class="nav-link">🖱️ Clicker</a>
+      <a href="platformer.html" class="nav-link active">🕹️ Platformer</a>
+    </nav>
+    <div class="foot">made to be wrong™</div>
+  </aside>
+
+  <main class="content">
+    <h1 class="page-title">🕹️ Platformer</h1>
+
+    <div class="card platformer">
+      <div class="pf__hud">
+        <div class="pf__legend">
+          <span class="muted">Controls (remap every 7s):</span>
+          <div id="legend"></div>
+        </div>
+        <div class="pf__timer">
+          Next remap in <span id="remapIn">7</span>s
+        </div>
+      </div>
+
+      <div class="pf__world" id="world">
+        <!-- player -->
+        <div id="player" class="pf__player"></div>
+        <!-- platforms -->
+        <div class="pf__platform" style="left:0; bottom:0; width:100%; height:24px;"></div>
+        <div class="pf__platform" style="left:40px; bottom:120px; width:160px; height:14px;"></div>
+        <div class="pf__platform" style="left:280px; bottom:200px; width:140px; height:14px;"></div>
+        <div class="pf__platform" style="left:520px; bottom:150px; width:180px; height:14px;"></div>
+        <div class="pf__platform" style="left:760px; bottom:260px; width:140px; height:14px;"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="platformer.js" defer></script>
+</body>
+</html>
