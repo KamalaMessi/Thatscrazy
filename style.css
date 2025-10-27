@@ -381,3 +381,27 @@ button.span-2 { grid-column: span 2; }
 }
 .ach-name{ font-weight: 700; }
 .ach-desc{ color: var(--text-dim); font-size: .9rem; }
+
+/* ===== PLATFORMER ===== */
+.platformer { max-width: 920px; }
+.plat-top{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px;
+}
+.plat-score{ font-weight:800; font-size:1.4rem; letter-spacing:.3px; }
+.plat-mapping{
+  font-variant-numeric: tabular-nums; font-size:.95rem; color: var(--text-dim);
+}
+#game{
+  display:block; width:100%; height:auto; border-radius:14px;
+  background:#0b1224; outline:1px solid rgba(255,255,255,.08);
+}
+.plat-hint{ margin-top:8px; }
+
+/* small toast overlay inside canvas corner */
+.plat-toast{
+  position:absolute; transform: translate(-50%, -50%);
+  background: rgba(17,24,39,.92); color:#e5e7eb; border:1px solid rgba(255,255,255,.12);
+  padding:6px 10px; border-radius:10px; font-size:.9rem;
+}
+
+
