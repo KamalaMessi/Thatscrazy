@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tools — Platformer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">thatscrazy.lol</div>
+    <nav class="nav">
+      <a href="achievements.html" class="nav-link">🏆 Achievements</a>
+      <div class="nav-sep" aria-hidden="true"></div>
+
+      <a href="index.html" class="nav-link">🧮 Calculator</a>
+      <a href="timer.html" class="nav-link">⏱️ Timer</a>
+      <a href="clicker.html" class="nav-link">🖱️ Clicker</a>
+      <a href="platformer.html" class="nav-link active">🎮 Platformer</a>
+    </nav>
+    <div class="foot">made to be wrong™</div>
+  </aside>
+
+  <main class="content">
+    <h1 class="page-title">🎮 Platformer (WSAD remaps every 7s)</h1>
+
+    <div class="card platformer">
+      <div class="plat-top">
+        <div class="plat-score">Score: <span id="pScore">0</span></div>
+        <div class="plat-mapping" id="pMap">W → JUMP • A → LEFT • S → DOWN • D → RIGHT</div>
+      </div>
+
+      <canvas id="game" width="900" height="500" aria-label="platformer"></canvas>
+      <div class="plat-hint muted">Collect dots • Every 7s controls reshuffle • Space = pause</div>
+    </div>
+  </main>
+
+  <script src="platformer.js" defer></script>
+</body>
+</html>
