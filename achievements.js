@@ -55,8 +55,22 @@
   desc: 'Reach 10000 score - you used autoclicker, didnt you?'
 }
       ]
+    },
+    platformer: {
+  title: "Platformer",
+  items: [
+    {
+      code: 'platformer_score_30',
+      name: 'Thirty Dots Later',
+      icon: '🎯',
+      desc: 'Reach 30 points in the platformer.'
     }
+  ]
+},
+
   };
+
+  
 
   // --- Storage -
   function load() {
