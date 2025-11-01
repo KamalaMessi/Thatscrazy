@@ -176,17 +176,32 @@ function pickMode(initial = false){
   }
 
   // rysowanie turtle ahh
-  function rafLoop(){
-    if (trueRem <= 0){
-  running = false;
-  hint.textContent = "THE END (you survived gng)";
+function rafLoop(){
+  if (!running) return;
 
-  // grant 21:37 if the run started with exactly 21m 37s (1297 sec) (papiez...)
-  if (plannedAtStart === (21*60 + 37) && window.Ach && !Ach.has('timer_21m37s_done')) {
-    Ach.grant('timer_21m37s_done');
+  const elapsedMs = getElapsedMs();
+  const trueRem = clamp(total - elapsedMs/1000, 0, total);
+
+  // zmiana trybu: UNITS trwa 2× dłużej
+  const interval = (mode === "UNITS") ? MODE_INTERVAL_MS * 2 : MODE_INTERVAL_MS;
+  if (performance.now() - modeSince >= interval) pickMode();
+
+  const displayRem = clamp(mapByMode(trueRem), 0, total);
+  writeDisplay(trueRem, displayRem);
+
+  if (trueRem <= 0){
+    running = false;
+    hint.textContent = "THE END (you survived gng)";
+    // grant 21:37 jeśli start był dokładnie 21:37
+    if (plannedAtStart === (21*60 + 37) && window.Ach && !Ach.has('timer_21m37s_done')) {
+      Ach.grant('timer_21m37s_done');
+    }
+    return;
   }
-  return;
+
+  requestAnimationFrame(rafLoop);
 }
+
 
     if (!running) return;
 
