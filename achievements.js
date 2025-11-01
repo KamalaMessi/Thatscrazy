@@ -61,7 +61,7 @@
   items: [
     {
       code: 'platformer_score_30',
-      name: 'Thirty Dots Later',
+      name: 'Well, did it shuffle?',
       icon: '🎯',
       desc: 'Reach 30 points in the platformer.'
     }
