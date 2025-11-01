@@ -12,7 +12,7 @@
     // Player
     const p = { x: 100, y: 360, w: 28, h: 38, vx: 0, vy: 0, onGround: false, color: '#60a5fa' };
   
-    // Platforms (ground + a few ledges)
+    // Platforms
     const plats = [
       { x:0, y:H-40, w:W, h:40 },
       { x:120, y:380, w:160, h:16 },
@@ -25,7 +25,7 @@
     let score = 0;
     const dots = [];
     function spawnDot(){
-      // spawn above ground, not inside platforms
+      // spawn above ground
       for(let tries=0; tries<100; tries++){
         const r = 7;
         const x = 40 + Math.random()*(W-80);
@@ -38,22 +38,22 @@
     }
     for(let i=0;i<8;i++) spawnDot();
   
-    // Controls (WSAD remapped)
+    // Controls
     const ACTIONS = ['JUMP','LEFT','DOWN','RIGHT'];
-    const KEYS = ['w','a','s','d']; // fixed physical keys we listen to
+    const KEYS = ['w','a','s','d']; 
     let keyDown = { w:false, a:false, s:false, d:false, space:false };
-    // key -> action mapping (e.g. {w:'LEFT', a:'JUMP', s:'RIGHT', d:'DOWN'})
+    // keys
     let keymap = {};
     const REMAP_MS = 7000;
     let lastRemap = 0;
   
     function shuffleRemap(){
-      // assign a random permutation of ACTIONS to KEYS
+      // assign a random
       const acts = ACTIONS.slice().sort(()=>Math.random()-0.5);
       keymap = { w:acts[0], a:acts[1], s:acts[2], d:acts[3] };
       lastRemap = performance.now();
       renderMap();
-      showCornerToast("Controls remapped!");
+      showCornerToast("Controls shuffle!");
     }
   
     function renderMap(){
@@ -62,11 +62,11 @@
     }
   
     function showCornerToast(msg){
-      // small 2s toast inside canvas top-right
+      
       const host = document.createElement('div');
       host.className = 'plat-toast';
       host.textContent = msg;
-      // position near canvas top-right
+      
       const rect = canvas.getBoundingClientRect();
       host.style.left = `${rect.left + rect.width - 120}px`;
       host.style.top  = `${rect.top + 20}px`;
@@ -85,27 +85,26 @@
       if (k in keyDown) keyDown[k] = false;
     });
   
-    // Helpers
+    // Helpers zeby sie nie rozwalilo
     function rectsOverlap(ax,ay,aw,ah,bx,by,bw,bh){
       return ax<bx+bw && ax+aw>bx && ay<by+bh && ay+ah>by;
     }
     function collidesAny(x,y,w,h,list){ return list.some(pl => rectsOverlap(x,y,w,h, pl.x,pl.y,pl.w,pl.h)); }
   
     function resolveCollisions(){
-      // basic AABB push-out, only vertical resolution for simplicity
+      
       p.onGround = false;
-      // apply vertical
       p.y += p.vy;
       for(const pl of plats){
         if (rectsOverlap(p.x,p.y,p.w,p.h, pl.x,pl.y,pl.w,pl.h)){
-          if (p.vy > 0){ // falling: put on top
+          if (p.vy > 0){ // falling
             p.y = pl.y - p.h; p.vy = 0; p.onGround = true;
-          } else if (p.vy < 0){ // bonk head
+          } else if (p.vy < 0){ // bonk!
             p.y = pl.y + pl.h; p.vy = 0;
           }
         }
       }
-      // apply horizontal
+      
       p.x += p.vx;
       for(const pl of plats){
         if (rectsOverlap(p.x,p.y,p.w,p.h, pl.x,pl.y,pl.w,pl.h)){
@@ -120,7 +119,7 @@
     }
   
     function applyControls(){
-      // map physical keys to actions
+      
       const act = (name) => {
         const k = Object.keys(keymap).find(k=>keymap[k]===name);
         return k ? keyDown[k] : false;
@@ -136,7 +135,7 @@
         p.onGround = false;
       }
   
-      // down = fast fall
+      // down is fast fall
       if (act('DOWN') && !p.onGround){
         p.vy += 0.8;
       }
@@ -145,7 +144,7 @@
     function update(){
       if (paused) return;
   
-      // periodic remap
+     
       if (performance.now() - lastRemap >= REMAP_MS) shuffleRemap();
   
       applyControls();
@@ -175,7 +174,7 @@
     function draw(){
       ctx.clearRect(0,0,W,H);
   
-      // bg grid subtle
+      
       ctx.fillStyle = '#0b1224'; ctx.fillRect(0,0,W,H);
       ctx.strokeStyle = 'rgba(255,255,255,.04)';
       ctx.lineWidth = 1;
@@ -200,7 +199,7 @@
       ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, p.w, p.h);
   
-      // remap timer bar (top)
+      // remap timer bar
       const t = Math.min(1, (performance.now() - lastRemap) / REMAP_MS);
       ctx.fillStyle = '#60a5fa';
       ctx.fillRect(0, 0, W*(1-t), 4);
