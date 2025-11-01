@@ -22,8 +22,8 @@
   let pausedAt = 0;             // ms od startu do pauzy
   let running = false;
 
-// --- stan efektów ---
-const MODE_INTERVAL_MS = 4000;   // ← bazowy interwał (u Ciebie 4 sekundy)
+
+const MODE_INTERVAL_MS = 4000;  
 let mode = "ACCEL";
 let modeSince = 0;
 let jumpOffset = 0;
