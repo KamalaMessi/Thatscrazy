@@ -9,7 +9,7 @@
       items: [
         {
   code: 'calc_div_zero_zero',
-  name: 'Are you proud of yourself?',
+  name: 'Sometimes i dream of saving the world.',
   icon: '🚫',
   desc: 'Devide 0 by 0 on the calculator.'
 }
@@ -38,7 +38,7 @@
         },
         {
           code: 'clicker_score_1000',
-          name: 'Four Digits Club',
+          name: 'Are you proud of yourself?',
           icon: '🔥',
           desc: 'Reach 1000 score in the clicker.'
         },
