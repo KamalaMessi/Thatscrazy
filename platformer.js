@@ -164,6 +164,10 @@
           dots.splice(i,1);
           score++; scoreEl.textContent = score;
           spawnDot();
+            if (window.Ach && score >= 30 && !Ach.has('platformer_score_30')) {
+  Ach.grant('platformer_score_30');
+}
+
         }
       }
     }
