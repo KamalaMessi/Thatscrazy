@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ---- STAN ----
+  
   let curr = "0";          // wpisywana liczba
   let op = null;           // + - * /
   let prevStr = null;      // lewy operand hche mi sie spac (dla -,*,/)
@@ -47,12 +47,15 @@ window.addEventListener("DOMContentLoaded", () => {
     "ChatGPT is free vro 🙏",
     "Prolly smth EVIL 👿",
     "Not a clue man"
+    "Hello World!"
+    "print("Hello World")"
+    "ก็็็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
   ];
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-  // ---- WIDOK ----
+  // WIDOK
   const show = t => screen.textContent = t;
 
   function rebuildDisplayWhileTyping(nextPart = "") {
@@ -67,7 +70,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---- HISTORIA CHCE MI SIE SPAC ----
+  // HISTORIA CHCE MI SIE SPAC
   function addHistory(expr, res) {
     if (!historyList) return;
     const li = document.createElement("li");
@@ -79,7 +82,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---- LOGIKA ----
+  // logic
   function inputNumber(n) {
     if (justEvaluated) { curr = "0"; justEvaluated = false; }
     if (n === ".") {
