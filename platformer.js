@@ -21,44 +21,16 @@
       { x:520, y:260, w:130, h:16 },
     ];
   
-  
 // Dots
 let score = 0;
 const dots = [];
 
 function spawnDotOnPlatform(preferX = null){
-
-    function isOnPlatformTop(dot){
-  // sprawdź, czy dot leży nad jakąś platformą (x w poziomie platformy i y ~ tuż nad)
-  for (const pl of plats){
-    if (dot.x >= pl.x && dot.x <= pl.x + pl.w){
-      const expectedY = pl.y - dot.r - 2;
-      if (Math.abs(dot.y - expectedY) <= 3) return true;
-    }
-  }
-  return false;
-}
-
-function respawnOldUnreachableDots(){
-  const now = performance.now();
-  for (let i = dots.length - 1; i >= 0; i--){
-    const d = dots[i];
-    // jeśli minęło 15s i kropka nie siedzi na „dachu” platformy -> respawn przy graczu
-    if (now - d.born > 15000 && !isOnPlatformTop(d)){
-      dots.splice(i,1);
-      spawnDotOnPlatform(p.x + p.w/2);
-    }
-  }
-}
-
-  // small idk how is that called in eng promien
   const r = 7;
   const edgeMargin = 12;
 
-  
   const pickPlat = () => {
     if (preferX == null) return plats[Math.floor(Math.random()*plats.length)];
-   
     let best = plats[0], bestDist = Math.abs(preferX - (plats[0].x + plats[0].w/2));
     for (const pl of plats){
       const cx = pl.x + pl.w/2;
@@ -72,12 +44,11 @@ function respawnOldUnreachableDots(){
     const pl = pickPlat();
     const minX = pl.x + edgeMargin + r;
     const maxX = pl.x + pl.w - edgeMargin - r;
-    if (maxX <= minX) continue; 
+    if (maxX <= minX) continue;
 
     const x = Math.random() * (maxX - minX) + minX;
-    const y = pl.y - r - 2; // idk i copied it from the internet
+    const y = pl.y - r - 2;
 
-    
     let ok = true;
     for (const d of dots){
       const dx = d.x - x, dy = d.y - y;
@@ -87,6 +58,28 @@ function respawnOldUnreachableDots(){
 
     dots.push({ x, y, r, hue: Math.floor(Math.random()*360), born: performance.now() });
     return;
+  }
+}
+
+
+function isOnPlatformTop(dot){
+  for (const pl of plats){
+    if (dot.x >= pl.x && dot.x <= pl.x + pl.w){
+      const expectedY = pl.y - dot.r - 2;
+      if (Math.abs(dot.y - expectedY) <= 3) return true;
+    }
+  }
+  return false;
+}
+
+function respawnOldUnreachableDots(){
+  const now = performance.now();
+  for (let i = dots.length - 1; i >= 0; i--){
+    const d = dots[i];
+    if (now - d.born > 15000 && !isOnPlatformTop(d)){
+      dots.splice(i,1);
+      spawnDotOnPlatform(p.x + p.w/2);
+    }
   }
 }
 
