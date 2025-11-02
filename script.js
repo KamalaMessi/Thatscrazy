@@ -46,9 +46,10 @@ window.addEventListener("DOMContentLoaded", () => {
     "Thats enough for you 👿",
     "ChatGPT is free vro 🙏",
     "Prolly smth EVIL 👿",
-    "Not a clue man"
-    "Hello World!"
-    "قواعد بولندا"
+    "Not a clue man",
+    "Hello World!",
+    "قواعد بولندا",
+    "ก็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
   ];
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
