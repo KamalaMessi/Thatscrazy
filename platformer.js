@@ -107,7 +107,7 @@ function respawnOldUnreachableDots(){
 }
 
 // start with 8 dots
-for (let i=0;i<8;i++) spawnDottform();
+for (let i=0;i<8;i++) spawnDotOnPlatform();
 
   
     // Controls
