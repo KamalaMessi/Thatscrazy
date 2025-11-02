@@ -27,6 +27,30 @@ let score = 0;
 const dots = [];
 
 function spawnDotOnPlatform(preferX = null){
+
+    function isOnPlatformTop(dot){
+  // sprawdź, czy dot leży nad jakąś platformą (x w poziomie platformy i y ~ tuż nad)
+  for (const pl of plats){
+    if (dot.x >= pl.x && dot.x <= pl.x + pl.w){
+      const expectedY = pl.y - dot.r - 2;
+      if (Math.abs(dot.y - expectedY) <= 3) return true;
+    }
+  }
+  return false;
+}
+
+function respawnOldUnreachableDots(){
+  const now = performance.now();
+  for (let i = dots.length - 1; i >= 0; i--){
+    const d = dots[i];
+    // jeśli minęło 15s i kropka nie siedzi na „dachu” platformy -> respawn przy graczu
+    if (now - d.born > 15000 && !isOnPlatformTop(d)){
+      dots.splice(i,1);
+      spawnDotOnPlatform(p.x + p.w/2);
+    }
+  }
+}
+
   // small idk how is that called in eng promien
   const r = 7;
   const edgeMargin = 12;
@@ -175,7 +199,7 @@ for (let i=0;i<8;i++) spawnDotOnPlatform();
   
     function update(){
       if (paused) return;
-  
+  respawnOldUnreachableDots();
      
       if (performance.now() - lastRemap >= REMAP_MS) shuffleRemap();
   
