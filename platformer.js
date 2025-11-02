@@ -218,7 +218,8 @@ for (let i=0;i<8;i++) spawnDotOnPlatform();
         if (dx*dx + dy*dy <= (d.r + Math.max(p.w,p.h)/2)**2){
           dots.splice(i,1);
           score++; scoreEl.textContent = score;
-          spawnDot();
+          spawnDotOnPlatform(p.x + p.w/2);
+
             if (window.Ach && score >= 30 && !Ach.has('platformer_score_30')) {
   Ach.grant('platformer_score_30');
 }
