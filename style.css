@@ -404,4 +404,12 @@ button.span-2 { grid-column: span 2; }
   padding:6px 10px; border-radius:10px; font-size:.9rem;
 }
 
+/* Disable double-tap zoom ,pinch zoom */
+html, body {
+  touch-action: manipulation;
+}
+
+button, a, .keys button {
+  touch-action: manipulation;
+}
 
