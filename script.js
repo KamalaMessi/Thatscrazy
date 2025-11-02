@@ -48,7 +48,6 @@ window.addEventListener("DOMContentLoaded", () => {
     "Prolly smth EVIL 👿",
     "Not a clue man"
     "Hello World!"
-    "print("Hello World")"
     "ก็็็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
     "قواعد بولندا"
   ];
