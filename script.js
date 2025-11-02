@@ -176,7 +176,7 @@ function pickNoRepeat(arr, history, windowSize = 10){
     break;
 
   case "/": {
-    // detect 0 ÷ 0 (achievement)
+    // detect 0 / 0 (achiev)
     const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
     const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
     if ((leftStr === "0" || leftStr === "0.0") && (rightStr === "0" || rightStr === "0.0")) {
