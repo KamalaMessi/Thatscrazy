@@ -37,5 +37,10 @@
   
 <script src="achievements.js" defer></script>
   <script src="platformer.js" defer></script>
+  <script>
+  document.addEventListener('gesturestart', e => e.preventDefault());
+  document.addEventListener('gesturechange', e => e.preventDefault());
+  document.addEventListener('gestureend', e => e.preventDefault());
+</script>
 </body>
 </html>
