@@ -27,7 +27,10 @@ const dots = [];
 
 function spawnDotOnPlatform(preferX = null){
   const r = 7;
-  const edgeMargin = 12;
+  const EDGE = 14;                
+  const MIN_HOVER = 14;           
+  const MAX_HOVER = 70;           
+  const MIN_DOT_DIST = 28;        
 
   const pickPlat = () => {
     if (preferX == null) return plats[Math.floor(Math.random()*plats.length)];
@@ -40,21 +43,35 @@ function spawnDotOnPlatform(preferX = null){
     return best;
   };
 
-  for (let tries = 0; tries < 50; tries++){
+  function spotFree(x,y){
+    // doesnt coma across no dots
+    for (const d of dots){
+      const dx = d.x - x, dy = d.y - y;
+      if (dx*dx + dy*dy < (MIN_DOT_DIST)**2) return false;
+    }
+    // aint cutting platform
+    for (const pl of plats){
+      if (x+r > pl.x && x-r < pl.x+pl.w){
+        
+        if (y + r > pl.y - 3 && y - r < pl.y + pl.h + 3) return false;
+      }
+    }
+    // w granicach canvasa
+    if (x - r < 0 || x + r > W || y - r < 0 || y + r > H) return false;
+    return true;
+  }
+
+  for (let tries = 0; tries < 80; tries++){
     const pl = pickPlat();
-    const minX = pl.x + edgeMargin + r;
-    const maxX = pl.x + pl.w - edgeMargin - r;
+    const minX = pl.x + EDGE + r;
+    const maxX = pl.x + pl.w - EDGE - r;
     if (maxX <= minX) continue;
 
     const x = Math.random() * (maxX - minX) + minX;
-    const y = pl.y - r - 2;
+    const hover = Math.random() * (MAX_HOVER - MIN_HOVER) + MIN_HOVER;
+    const y = pl.y - hover; // LEŻY W POWIETRZU
 
-    let ok = true;
-    for (const d of dots){
-      const dx = d.x - x, dy = d.y - y;
-      if (dx*dx + dy*dy < (d.r + r + 4)**2) { ok = false; break; }
-    }
-    if (!ok) continue;
+    if (!spotFree(x,y)) continue;
 
     dots.push({ x, y, r, hue: Math.floor(Math.random()*360), born: performance.now() });
     return;
@@ -62,21 +79,27 @@ function spawnDotOnPlatform(preferX = null){
 }
 
 
-function isOnPlatformTop(dot){
+
+function isReachable(dot){
+  // Czy znajduje się nad JAKĄŚ platformą (x w poziomie platformy)
+  // i w rozsądnej wysokości (<= MAX_HOVER jak w spawnerze)
+  const MAX_HOVER = 70;
   for (const pl of plats){
     if (dot.x >= pl.x && dot.x <= pl.x + pl.w){
-      const expectedY = pl.y - dot.r - 2;
-      if (Math.abs(dot.y - expectedY) <= 3) return true;
+      const hover = pl.y - dot.y;
+      if (hover >= 14 && hover <= MAX_HOVER) return true;
     }
   }
   return false;
 }
 
+
 function respawnOldUnreachableDots(){
   const now = performance.now();
   for (let i = dots.length - 1; i >= 0; i--){
     const d = dots[i];
-    if (now - d.born > 15000 && !isOnPlatformTop(d)){
+    // po 15s, jeśli „zła” pozycja → respawn przy graczu (na sensownej platformie)
+    if (now - d.born > 15000 && !isReachable(d)){
       dots.splice(i,1);
       spawnDotOnPlatform(p.x + p.w/2);
     }
@@ -84,7 +107,7 @@ function respawnOldUnreachableDots(){
 }
 
 // start with 8 dots
-for (let i=0;i<8;i++) spawnDotOnPlatform();
+for (let i=0;i<8;i++) spawnDottform();
 
   
     // Controls
