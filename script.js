@@ -165,33 +165,27 @@ function pickNoRepeat(arr, history, windowSize = 10){
       return;
     }
 
-    expr = `${prevStr} ${opSymbol[op] ?? op} ${curr}`;
+expr = `${prevStr} ${opSymbol[op] ?? op} ${curr}`;
     switch (op) {
-  case "-":
-    result = `${randInt(-100, 100)} i think`;
-    break;
-
-  case "*":
-    result = pickNoRepeat(multLines, lastMult, 10);
-    break;
-
-  case "/": {
-    // detect 0 / 0 (achiev)
-    const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
-    const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
-    if ((leftStr === "0" || leftStr === "0.0") && (rightStr === "0" || rightStr === "0.0")) {
-      if (window.Ach && !Ach.has('calc_div_zero_zero')) Ach.grant('calc_div_zero_zero');
-    }
-    result = pickNoRepeat(divLines, lastDiv, 10);
-    break;
-  }
-
-  default:
-    result = curr;
-}
-
-        result = pick(divLines);
+      case "-":
+        result = `${randInt(-100, 100)} i think`;
         break;
+
+      case "*":
+        result = pickNoRepeat(multLines, lastMult, 10);
+        break;
+
+      case "/": {
+        // detect 0 ÷ 0 (achievement)
+        const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
+        const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
+        if ((leftStr === "0" || leftStr === "0.0") && (rightStr === "0" || rightStr === "0.0")) {
+          if (window.Ach && !Ach.has('calc_div_zero_zero')) Ach.grant('calc_div_zero_zero');
+        }
+        result = pickNoRepeat(divLines, lastDiv, 10);
+        break;
+      }
+
       default:
         result = curr;
     }
