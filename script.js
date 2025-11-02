@@ -52,6 +52,26 @@ window.addEventListener("DOMContentLoaded", () => {
     "ก็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
   ];
 
+  // no-repeat picker
+const lastMult = [];
+const lastDiv  = [];
+
+function pickNoRepeat(arr, history, windowSize = 10){
+  // lista bez ostatnich powtorek
+  const recent = new Set(history.slice(-windowSize));
+  const pool = arr.filter(x => !recent.has(x));
+
+  // zresetuj historiel
+  const choicePool = pool.length ? pool : arr;
+
+  const val = choicePool[Math.floor(Math.random()*choicePool.length)];
+  history.push(val);
+  // przycina historie
+  if (history.length > windowSize) history.splice(0, history.length - windowSize);
+  return val;
+}
+
+  
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -150,11 +170,21 @@ window.addEventListener("DOMContentLoaded", () => {
       case "-":
         result = `${randInt(-100, 100)} i think`;
         break;
-      case "*":
-        result = pick(multLines);
-        break;
-      case "/":
-        case "/": {
+     case "*":
+  result = pickNoRepeat(multLines, lastMult, 10);
+  break;
+
+case "/": {
+  // detect 0 / 0 (achiev)
+  const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
+  const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
+  if ((leftStr === "0" || leftStr === "0.0") && (rightStr === "0" || rightStr === "0.0")) {
+    if (window.Ach && !Ach.has('calc_div_zero_zero')) Ach.grant('calc_div_zero_zero');
+  }
+  result = pickNoRepeat(divLines, lastDiv, 10);
+  break;
+}
+
   // detect 0 ÷ 0
   const leftStr  = (typeof prevStr === 'string') ? prevStr.trim() : `${prevStr}`;
   const rightStr = (typeof curr === 'string') ? curr.trim() : `${curr}`;
