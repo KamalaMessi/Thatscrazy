@@ -21,22 +21,54 @@
       { x:520, y:260, w:130, h:16 },
     ];
   
-    // Dots
-    let score = 0;
-    const dots = [];
-    function spawnDot(){
-      // spawn above ground
-      for(let tries=0; tries<100; tries++){
-        const r = 7;
-        const x = 40 + Math.random()*(W-80);
-        const y = 60 + Math.random()*(H-140);
-        if (!collidesAny(x-r, y-r, r*2, r*2, plats)) {
-          dots.push({x, y, r, hue: Math.floor(Math.random()*360)});
-          return;
-        }
-      }
+  
+// Dots
+let score = 0;
+const dots = [];
+
+function spawnDotOnPlatform(preferX = null){
+  // small idk how is that called in eng promien
+  const r = 7;
+  const edgeMargin = 12;
+
+  
+  const pickPlat = () => {
+    if (preferX == null) return plats[Math.floor(Math.random()*plats.length)];
+   
+    let best = plats[0], bestDist = Math.abs(preferX - (plats[0].x + plats[0].w/2));
+    for (const pl of plats){
+      const cx = pl.x + pl.w/2;
+      const d = Math.abs(preferX - cx);
+      if (d < bestDist){ best = pl; bestDist = d; }
     }
-    for(let i=0;i<8;i++) spawnDot();
+    return best;
+  };
+
+  for (let tries = 0; tries < 50; tries++){
+    const pl = pickPlat();
+    const minX = pl.x + edgeMargin + r;
+    const maxX = pl.x + pl.w - edgeMargin - r;
+    if (maxX <= minX) continue; 
+
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = pl.y - r - 2; // idk i copied it from the internet
+
+    
+    let ok = true;
+    for (const d of dots){
+      const dx = d.x - x, dy = d.y - y;
+      if (dx*dx + dy*dy < (d.r + r + 4)**2) { ok = false; break; }
+    }
+    if (!ok) continue;
+
+    dots.push({ x, y, r, hue: Math.floor(Math.random()*360), born: performance.now() });
+    return;
+  }
+}
+
+// start with 8 dots
+for (let i=0;i<8;i++) spawnDotOnPlatform();
+
   
     // Controls
     const ACTIONS = ['JUMP','LEFT','DOWN','RIGHT'];
