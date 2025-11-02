@@ -50,6 +50,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "Hello World!"
     "print("Hello World")"
     "ก็็็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
+    "قواعد بولندا"
   ];
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
