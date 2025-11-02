@@ -25,57 +25,99 @@
 let score = 0;
 const dots = [];
 
-function spawnDotOnPlatform(preferX = null){
+    let score = 0;
+const dots = [];
+
+// zremember me now i have to say goodbye remember me (remember the dot position)
+const recentSpawns = []; // {x,y,ts}
+function rememberSpawn(x,y){
+  recentSpawns.push({x,y,ts: performance.now()});
+  if (recentSpawns.length > 8) recentSpawns.shift(); 
+}
+
+function spawnDotOnPlatform(preferX = null, avoid = []){
   const r = 7;
-  const EDGE = 14;                
-  const MIN_HOVER = 14;           
-  const MAX_HOVER = 70;           
-  const MIN_DOT_DIST = 28;        
+  const EDGE = 14;               
+  const MIN_HOVER = 14;          
+  const MAX_HOVER = 70;          
+  const MIN_DOT_DIST = 28;       
+  const FAR_FROM_RECENT = 180;   
+  const FAR_FROM_AVOID  = 220;   
 
-  const pickPlat = () => {
-    if (preferX == null) return plats[Math.floor(Math.random()*plats.length)];
-    let best = plats[0], bestDist = Math.abs(preferX - (plats[0].x + plats[0].w/2));
-    for (const pl of plats){
-      const cx = pl.x + pl.w/2;
-      const d = Math.abs(preferX - cx);
-      if (d < bestDist){ best = pl; bestDist = d; }
-    }
-    return best;
-  };
+  
+  const platOrder = plats.slice().sort(() => Math.random() - 0.5);
 
-  function spotFree(x,y){
-    // doesnt coma across no dots
-    for (const d of dots){
-      const dx = d.x - x, dy = d.y - y;
-      if (dx*dx + dy*dy < (MIN_DOT_DIST)**2) return false;
+  
+  platOrder.sort((a,b) => {
+    if (preferX == null) return 0;
+    const da = Math.abs(preferX - (a.x + a.w/2));
+    const db = Math.abs(preferX - (b.x + b.w/2));
+    return db - da; 
+  });
+
+  function farFromRecent(x,y){
+    for (const p of recentSpawns){
+      const dx = p.x - x, dy = p.y - y;
+      if (dx*dx + dy*dy < FAR_FROM_RECENT*FAR_FROM_RECENT) return false;
     }
-    // aint cutting platform
-    for (const pl of plats){
-      if (x+r > pl.x && x-r < pl.x+pl.w){
-        
-        if (y + r > pl.y - 3 && y - r < pl.y + pl.h + 3) return false;
-      }
-    }
-    // w granicach canvasa
-    if (x - r < 0 || x + r > W || y - r < 0 || y + r > H) return false;
     return true;
   }
 
-  for (let tries = 0; tries < 80; tries++){
-    const pl = pickPlat();
+  function farFromAvoid(x,y){
+    for (const a of avoid){
+      const need = a.min || FAR_FROM_AVOID;
+      const dx = (a.x ?? 0) - x, dy = (a.y ?? 0) - y;
+      if (dx*dx + dy*dy < need*need) return false;
+    }
+    return true;
+  }
+
+  function spotFree(x,y){
+    
+    for (const d of dots){
+      const dx = d.x - x, dy = d.y - y;
+      if (dx*dx + dy*dy < MIN_DOT_DIST*MIN_DOT_DIST) return false;
+    }
+    
+    for (const pl of plats){
+      if (x+r > pl.x && x-r < pl.x+pl.w){
+        if (y + r > pl.y - 3 && y - r < pl.y + pl.h + 3) return false;
+      }
+    }
+    
+    if (x - r < 0 || x + r > W || y - r < 0 || y + r > H) return false;
+
+    if (!farFromRecent(x,y)) return false;
+    if (!farFromAvoid(x,y))  return false;
+
+    return true;
+  }
+
+  
+  for (let tries = 0; tries < 120; tries++){
+    const pl = platOrder[tries % platOrder.length]; // rotacja po różnych platformach
+
     const minX = pl.x + EDGE + r;
     const maxX = pl.x + pl.w - EDGE - r;
     if (maxX <= minX) continue;
 
     const x = Math.random() * (maxX - minX) + minX;
     const hover = Math.random() * (MAX_HOVER - MIN_HOVER) + MIN_HOVER;
-    const y = pl.y - hover; // LEŻY W POWIETRZU
+    const y = pl.y - hover;
 
     if (!spotFree(x,y)) continue;
 
     dots.push({ x, y, r, hue: Math.floor(Math.random()*360), born: performance.now() });
+    rememberSpawn(x,y);
     return;
   }
+
+  // Fallback
+  const edgePlat = platOrder[0];
+  const safeX = Math.min(Math.max((preferX ?? (edgePlat.x + edgePlat.w/2)), edgePlat.x + 20), edgePlat.x + edgePlat.w - 20);
+  const y = edgePlat.y - 40;
+  dots.push({ x: safeX, y, r, hue: Math.floor(Math.random()*360), born: performance.now() });
+  rememberSpawn(safeX,y);
 }
 
 
@@ -226,24 +268,30 @@ for (let i=0;i<8;i++) spawnDotOnPlatform();
       p.vy += GRAV;
       resolveCollisions();
   
-      // collect dots
-      for (let i=dots.length-1;i>=0;i--){
-        const d = dots[i];
-        const cx = p.x + p.w/2, cy = p.y + p.h/2;
-        const dx = d.x - cx, dy = d.y - cy;
-        if (dx*dx + dy*dy <= (d.r + Math.max(p.w,p.h)/2)**2){
-          dots.splice(i,1);
-          score++; scoreEl.textContent = score;
-          spawnDotOnPlatform(p.x + p.w/2);
+     // collect dots
+for (let i=dots.length-1;i>=0;i--){
+  const d = dots[i];
+  const cx = p.x + p.w/2, cy = p.y + p.h/2;
+  const dx = d.x - cx, dy = d.y - cy;
+  if (dx*dx + dy*dy <= (d.r + Math.max(p.w,p.h)/2)**2){
+    dots.splice(i,1);
+    score++; scoreEl.textContent = score;
 
-            if (window.Ach && score >= 30 && !Ach.has('platformer_score_30')) {
-  Ach.grant('platformer_score_30');
+    
+    spawnDotOnPlatform(
+      null,
+      [
+        { x: d.x, y: d.y, min: 260 },               
+        { x: p.x + p.w/2, y: p.y, min: 220 }         
+      ]
+    );
+
+    if (window.Ach && score >= 30 && !Ach.has('platformer_score_30')) {
+      Ach.grant('platformer_score_30');
+    }
+  }
 }
 
-        }
-      }
-    }
-  
     function draw(){
       ctx.clearRect(0,0,W,H);
   
