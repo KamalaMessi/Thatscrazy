@@ -49,7 +49,10 @@ window.addEventListener("DOMContentLoaded", () => {
     "Not a clue man",
     "Hello World!",
     "قواعد بولندا",
-    "ก็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure"
+    "ก็็็็็็็็็็็็็็็็็็ ඞඞ but im not sure",
+    "gabagul says that youre retarded (devided= re and tard)"
+  
+    
   ];
 
   // no-repeat picker
