@@ -78,6 +78,12 @@
     const s = Math.max(0, seconds);
     return s.toFixed(3);
   }
+  function setUnitLabel(){
+  if (unitMode === 'ns') unitLabel.textContent = 'nanoseconds';
+  else if (unitMode === 'ms') unitLabel.textContent = 'milliseconds';
+  else unitLabel.textContent = 'seconds';
+}
+
 
   function maybeFlipUnits(now){
     if (now < unitSwitchAt) return;
@@ -146,7 +152,9 @@
       spawnChaos();
     }
 
-    bigTime.textContent = formatDisplay(remainingDisplaySec);
+    setUnitLabel();
+bigTime.innerHTML = renderTimeHTML(remainingDisplaySec);
+
 
     if (f >= 1){
       // finished
@@ -166,6 +174,9 @@
   bigTime.textContent = '3.000';
   unitLabel.textContent = 'seconds';
   statusLine.textContent = '…';
+  bigTime.innerHTML = renderTimeHTML(3);  // 00:03.000
+setUnitLabel();                         // secs for start
+
 })();
 
 function pad2(n){ return String(n).padStart(2,'0'); }
