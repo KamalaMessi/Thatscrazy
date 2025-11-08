@@ -413,3 +413,48 @@ button, a, .keys button {
   touch-action: manipulation;
 }
 
+/* === Count to 3 = */
+.c3 { position: relative; overflow: hidden; min-height: 420px; }
+.c3-center { display: grid; place-items: center; gap: 18px; min-height: 360px; padding: 16px; }
+.btn-big{
+  font-size: 1.5rem; font-weight: 800;
+  padding: 16px 22px; border-radius: 14px; border: 1px solid rgba(255,255,255,.15);
+  background: rgba(96,165,250,.12); color: #e5e7eb; cursor: pointer;
+}
+.btn-big:hover{ transform: translateY(-1px); background: rgba(96,165,250,.18); }
+
+.c3-warning{
+  font-size: 1.1rem; text-align: center;
+  background: rgba(255, 196, 0, .08);
+  border: 1px solid rgba(255, 196, 0, .25);
+  padding: 10px 12px; border-radius: 12px;
+  max-width: 520px;
+}
+
+.c3-timer { text-align: center; }
+.c3-time{
+  font-variant-numeric: tabular-nums; letter-spacing: .5px;
+  font-size: clamp(48px, 8vw, 120px);
+  line-height: 1; font-weight: 900;
+}
+.c3-units{ margin-top: 6px; color: var(--text-dim); }
+.c3-status{ margin-top: 10px; font-size: .95rem; }
+
+/* chaos bscally lol */
+.c3-fly{
+  position: absolute; left: -200px; top: -200px;
+  pointer-events: none; opacity: .9;
+  font-weight: 800; font-size: 1rem;
+  padding: 6px 10px; border-radius: 12px;
+  background: rgba(17,24,39,.9);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  will-change: transform, opacity;
+  animation: c3-fly-move linear forwards;
+}
+@keyframes c3-fly-move {
+  0%   { transform: translate(var(--x0), var(--y0)) rotate(var(--rot0)); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate(var(--x1), var(--y1)) rotate(var(--rot1)); opacity: 0; }
+}
