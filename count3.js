@@ -166,8 +166,9 @@
 
   // Expulsion buttons logic
   const expelLabels = [
-    "expulsion letter", "principal visit", "lost rollbook",
-    "attendance check", "parent call", "detention letter"
+    "expulsion letter", "principal visit", "lost textbook",
+    "attendance check", "parent call", "detention letter","liczę do 3","little talk","behaviour report","missing assignment","locker inspection","parent–teacher conference","academic performance review",
+   "pre-suspension advisory letter","rule violation notice","academic warning","Calc death"
   ];
 
   // create one button element
