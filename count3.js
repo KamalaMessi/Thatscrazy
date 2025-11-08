@@ -16,12 +16,20 @@
   const REAL_MS_TOTAL = 10 * 60 * 1000; // 10 min
   const DISPLAY_SECONDS_TOTAL = 3;      
 
-  // messages / chaos / units
+
   const messages = [
-    "Its almost over!","loading...","unpacking files","loading textures",
-    "installing dependencies","reticulating splines","compiling shaders",
-    "optimizing RAM (plz wait)","loading your expulsion letter",
-    "checking Quantum License","decrypting your excuses","cleaning cache…"
+    "Its almost over!","loading...","unpacking files...","loading textures...",
+    "installing dependencies...","reticulating splines...","compiling shaders...",
+    "optimizing RAM (plz wait)...","loading your expulsion letter...",
+    "checking Quantum License...","decrypting your excuses...","cleaning cache...",
+   "what do we have here","Thats crazy!! 🤯","Loading your Harvard rejection letter...","rendering your seat...","rendering the principal's office",
+   "defragmenting hopes and wishes...","measuring yo GPA...","checking principal's mood...","finding will to continue...","rebooting optimism...",
+   "pretending everything is fine...","rendering suspense...","adding unnecessary loading text...","waiting for user to breathe...","enhancing dramatic tension...",
+   "disabling unnecessary laws of physics...","rendering chinese scrolls...","loading Igor's calc damages...","teaching the CPU...","executing an SQL injection...","rendering 208 bus textures",
+   "unpacking contamined locker...","THATS CRAZY BRO!!!","unloading a backpack with 278299 billions pounds of thiosulfate...","hide your phone","deleting your phone from existance...",
+   "practicing the disappointed inhale...","polishing 'I’m not angry, just disappointed' tone...","rehearsing dramatic pause #1...","aligning eyebrows into Concern Mode...","measuring silence for maximum tension...",
+   "compiling list of ‘students I need to talk to after this’...","frantof.","preloading uncomfortably long pause #2...","checking if students are pretending to listen...","uploading reminder that phones should be off...",
+   "co ty kurwa robisz na tym ipadzie Max","deleting evil ipad from existance..."
   ];
   let msgTimer = 0;
   let unitMode = 's';
@@ -32,7 +40,7 @@
   let nextExpelAt = 0;
   let expelIntervalMin = 4000;
   let expelIntervalMax = 7000;
-  const activeExpel = new Set(); // track buttons (ids) active
+  const activeExpel = new Set(); // track buttons active
 
   
   const rand  = (a,b)=>Math.random()*(b-a)+a;
@@ -76,7 +84,56 @@
     el.textContent = pick([
       '🧪 compiling anger…','⚠️ almost there','📦 unpacking 3','🧠 thinking really hard',
       '🌀 chaos event','💾 saving logs','🧨 destrucion soon','🧯 not yet',
-      '🤖 updating firmware','📡 buffering…','🧐 converting seconds','🧩 assembling parts'
+      '🤖 updating firmware','📡 buffering…','🧐 converting seconds','🧩 assembling parts',"⏳ loading...",
+"📦 unpacking files",
+"🖼️ loading textures",
+"🛠️ installing dependencies",
+"🌀 reticulating splines",
+"🎛️ compiling shaders",
+"🧠 optimizing RAM (plz wait)",
+"📄 loading your expulsion letter",
+"🪐 checking Quantum License",
+"🔐 decrypting your excuses",
+"🧹 cleaning cache",
+"👀 what do we have here",
+"🤯 Thats crazy!! 🤯",
+"📬 Loading your Harvard rejection letter",
+"🎟️ rendering your seat",
+"🏫 rendering the principal's office",
+"💔 defragmenting hopes and wishes",
+"📊 measuring yo GPA",
+"😐 checking principal's mood",
+"🫥 finding will to continue",
+"🔄 rebooting optimism...",
+"😶‍🌫️ pretending everything is fine",
+"🎭 rendering suspense",
+"📝 adding unnecessary loading text",
+"💨 waiting for user to breathe",
+"⚡ enhancing dramatic tension",
+"🚫 disabling unnecessary laws of physics",
+"📜 rendering chinese scrolls",
+"📉 loading Igor's calc damages",
+"🧑‍🏫 teaching the CPU",
+"💥 executing an SQL injection",
+"🚌 rendering 208 bus textures",
+"🧪 unpacking contamined locker",
+"🤯 THATS CRAZY BRO!!!",
+"🎒 unloading a backpack with 278299 billions pounds of thiosulfate",
+"📵 hide your phone",
+"🗑️ deleting your phone from existance",
+"😤 practicing the disappointed inhale",
+"🧼 polishing 'I’m not angry, just disappointed' tone",
+"⏸️ rehearsing dramatic pause #1",
+"🫨 aligning eyebrows into Concern Mode",
+"🔕 measuring silence for maximum tension",
+"📋 compiling list of ‘students I need to talk to after this’",
+"🐸 frantof.",
+"⏳ preloading uncomfortably long pause #2",
+"🧐 checking if students are pretending to listen",
+"📢 uploading reminder that phones should be off",
+"🤨 co ty kurwa robisz na tym ipadzie Max",
+"🔥 deleting evil ipad from existance"
+
     ]);
 
     const x0 = rand(-50, w*0.2), y0 = rand(0, h*0.9);
