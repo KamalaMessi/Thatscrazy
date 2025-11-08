@@ -30,7 +30,7 @@
     DODGE:'DODGE',            // ucieka od kursora 5s
     BOUNCE:'BOUNCE',          // odbijanie po arenie 3s
     SIZE_WARP:'SIZE_WARP',    // rośnie/maleje przez chwilę
-    GHOST_CLONE:'GHOST_CLONE',// szary przycisk-duch (kradnie klik)
+    GHOST_CLONE:'GHOST_CLONE',// szary przyciskduch (kradnie klik)
     CONFETTI_SPAM:'CONFETTI'  // spawner latających emoji
   };
 
@@ -129,7 +129,7 @@ green.onclick = () => {
     setTimeout(remove, 6000);
   }
 
-  // tiny run for 2s cuttie
+  // tiny run for 2s
   async function doJitter(){
     btn.classList.add('btn-trail');
     const rect = field.getBoundingClientRect();
