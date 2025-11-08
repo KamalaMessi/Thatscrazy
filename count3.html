@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Tools — Count to 3</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">thatscrazy.lol</div>
+    <nav class="nav">
+      <a href="achievements.html" class="nav-link">🏆 Achievements</a>
+      <div class="nav-sep" aria-hidden="true"></div>
+
+      <a href="index.html" class="nav-link">🧮 Calculator</a>
+      <a href="timer.html" class="nav-link">⏱️ Timer</a>
+      <a href="clicker.html" class="nav-link">🖱️ Clicker</a>
+      <a href="platformer.html" class="nav-link">🎮 Platformer</a>
+      <a href="count3.html" class="nav-link active">🧨 Count to 3</a>
+    </nav>
+    <div class="foot">made to be wrong™</div>
+  </aside>
+
+  <main class="content">
+    <h1 class="page-title">🧨 Count to 3</h1>
+
+    <div class="card c3">
+      <div class="c3-center">
+        <button id="panicBtn" class="btn-big">I messed up</button>
+
+        <div id="warning" class="c3-warning" hidden>
+          That’s it! I’m counting to 3, you better undo this!
+        </div>
+
+        <div id="timerWrap" class="c3-timer" hidden>
+          <div id="bigTime" class="c3-time">3.000</div>
+          <div class="c3-units">unit: <span id="unitLabel">seconds</span></div>
+          <div id="statusLine" class="c3-status muted">…</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="count3.js" defer></script>
+
+  <!-- (opcjonalnie) totalny zakaz pinch na iOS -->
+  <script>
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('gesturechange', e => e.preventDefault());
+    document.addEventListener('gestureend', e => e.preventDefault());
+  </script>
+</body>
+</html>
 
