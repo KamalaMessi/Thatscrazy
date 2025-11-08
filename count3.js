@@ -79,3 +79,92 @@
     return s.toFixed(3);
   }
 
+  function maybeFlipUnits(now){
+    if (now < unitSwitchAt) return;
+    unitSwitchAt = now + rand(1500, 6000);
+    // weighted: prefer ms and ns more often to feel slower
+    const pool = ['s','ms','ms','ns','ms','ns'];
+    unitMode = pick(pool);
+  }
+
+  function maybeNewStatus(now){
+    if (now - msgTimer >= 2000){
+      msgTimer = now;
+      statusLine.textContent = pick(messages);
+    }
+  }
+
+  function spawnChaos(){
+    const host = document.querySelector('.c3');
+    if (!host) return;
+    const w = host.clientWidth, h = host.clientHeight;
+    const el = document.createElement('div');
+    el.className = 'c3-fly';
+    el.textContent = pick([
+      '🧪 compiling anger…',
+      '⚠️ almost there',
+      '📦 unpacking 3',
+      '🧠 thinking really hard',
+      '🌀 chaos event',
+      '💾 saving logs',
+      '🧨 boom soon',
+      '🧯 not yet',
+      '🤖 updating firmware',
+      '📡 buffering…',
+      '🧐 converting seconds',
+      '🧩 assembling parts'
+    ]);
+
+    // random path across the card
+    const x0 = rand(-50, w*0.2), y0 = rand(0, h*0.9);
+    const x1 = rand(w*0.6, w+60), y1 = rand(0, h*0.9);
+    el.style.setProperty('--x0', `${x0}px`);
+    el.style.setProperty('--y0', `${y0}px`);
+    el.style.setProperty('--x1', `${x1}px`);
+    el.style.setProperty('--y1', `${y1}px`);
+    el.style.setProperty('--rot0', `${rand(-20,20)}deg`);
+    el.style.setProperty('--rot1', `${rand(-20,20)}deg`);
+    el.style.animationDuration = `${rand(2500, 5000)}ms`;
+
+    host.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+  }
+
+  function tick(now){
+    if (phase !== 'counting') return;
+
+    // progress in real time
+    const elapsedMs = now - startTs;
+    const f = clamp(elapsedMs / REAL_MS_TOTAL, 0, 1);
+    const remainingDisplaySec = DISPLAY_SECONDS_TOTAL * (1 - f); // 3 -> 0 over 10min
+
+    // UI updates
+    maybeFlipUnits(now);
+    maybeNewStatus(now);
+    if (now >= chaosNextAt){
+      chaosNextAt = now + rand(1800, 4200);
+      spawnChaos();
+    }
+
+    bigTime.textContent = formatDisplay(remainingDisplaySec);
+
+    if (f >= 1){
+      // finished
+      bigTime.textContent = (unitMode === 's') ? '0.000' : '0';
+      statusLine.textContent = "…done. You made it to zero. Its over, lets see if principal is in school today.";
+      return;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // entry
+  panicBtn.addEventListener('click', () => {
+    if (phase === 'idle') setPhase('warning');
+  });
+
+  // initial state
+  bigTime.textContent = '3.000';
+  unitLabel.textContent = 'seconds';
+  statusLine.textContent = '…';
+})();
+
