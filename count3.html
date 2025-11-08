@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Tools — Count to 3</title>
+  <title>Count to 3</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -24,10 +24,10 @@
   </aside>
 
   <main class="content">
-    <h1 class="page-title">🧨 Count to 3</h1>
+    <h1 class="page-title">🧨 Im counting to 3.</h1>
 
     <div class="card c3">
-      <div class="c3-center">
+      <div class="c3-center" id="c3Host">
         <button id="panicBtn" class="btn-big">I messed up</button>
 
         <div id="warning" class="c3-warning" hidden>
@@ -35,12 +35,20 @@
         </div>
 
         <div id="timerWrap" class="c3-timer" hidden>
-  <div class="c3-timebox">
-    <div id="bigTime" class="c3-time" aria-live="polite">00:03.000</div>
-  </div>
-  <div class="c3-units">unit: <span id="unitLabel">seconds</span></div>
-  <div id="statusLine" class="c3-status muted">…</div>
-</div>
+          <div class="c3-timebox">
+            <div id="bigTime" class="c3-time" aria-live="polite">00:03.000</div>
+          </div>
+          <div class="c3-units">unit: <span id="unitLabel">seconds</span></div>
+          <div id="statusLine" class="c3-status muted">…</div>
+
+          
+          <div id="c3Caption" class="c3-caption">
+            You are NOT sitting in your designated place in class. You got 3 seconds to switch - or fight.
+          </div>
+        </div>
+
+        
+        <div id="expelContainer" class="expel-container" aria-hidden="false"></div>
 
       </div>
     </div>
@@ -48,7 +56,7 @@
 
   <script src="count3.js" defer></script>
 
-
+  
   <script>
     document.addEventListener('gesturestart', e => e.preventDefault());
     document.addEventListener('gesturechange', e => e.preventDefault());
@@ -56,4 +64,3 @@
   </script>
 </body>
 </html>
-
