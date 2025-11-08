@@ -35,17 +35,20 @@
         </div>
 
         <div id="timerWrap" class="c3-timer" hidden>
-          <div id="bigTime" class="c3-time">3.000</div>
-          <div class="c3-units">unit: <span id="unitLabel">seconds</span></div>
-          <div id="statusLine" class="c3-status muted">…</div>
-        </div>
+  <div class="c3-timebox">
+    <div id="bigTime" class="c3-time" aria-live="polite">00:03.000</div>
+  </div>
+  <div class="c3-units">unit: <span id="unitLabel">seconds</span></div>
+  <div id="statusLine" class="c3-status muted">…</div>
+</div>
+
       </div>
     </div>
   </main>
 
   <script src="count3.js" defer></script>
 
-  <!-- (opcjonalnie) totalny zakaz pinch na iOS -->
+
   <script>
     document.addEventListener('gesturestart', e => e.preventDefault());
     document.addEventListener('gesturechange', e => e.preventDefault());
