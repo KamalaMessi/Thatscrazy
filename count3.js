@@ -6,15 +6,15 @@
   const unitLabel  = document.getElementById('unitLabel');
   const statusLine = document.getElementById('statusLine');
 
-  // phases: idle -> warning(4s) -> counting(10min)
+
   let phase = 'idle';
-  let startTs = 0;              // performance.now() when counting starts
+  let startTs = 0;             
   const REAL_MS_TOTAL = 10 * 60 * 1000; // 10 minutes
-  const DISPLAY_SECONDS_TOTAL = 3;      // we count 3 -> 0
-  // exact mapping: 600s real -> 3s fake => multiplier 3/600 = 0.005
+  const DISPLAY_SECONDS_TOTAL = 3;      
+
   const REAL_TO_DISPLAY = DISPLAY_SECONDS_TOTAL / (REAL_MS_TOTAL / 1000); // 0.005
 
-  // status messages every ~2s
+  // status messages every 2s
   const messages = [
     "Its almost over!",
     "loading...",
@@ -31,7 +31,7 @@
   ];
   let msgTimer = 0;
 
-  // silly units mode: s / ms / ns — flips randomly
+  // silly units mode, flips randomly
   let unitMode = 's';
   let unitSwitchAt = 0;
 
@@ -62,7 +62,7 @@
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   function formatDisplay(seconds){
-    // seconds can be fractional; show based on unitMode
+ 
     if (unitMode === 'ns'){
       const ns = Math.max(0, Math.round(seconds * 1e9));
       unitLabel.textContent = 'nanoseconds';
@@ -73,7 +73,7 @@
       unitLabel.textContent = 'milliseconds';
       return `${ms.toLocaleString()}`;
     }
-    // default seconds with 3 decimals
+    // default seconds with 3 decimss
     unitLabel.textContent = 'seconds';
     const s = Math.max(0, seconds);
     return s.toFixed(3);
@@ -82,7 +82,7 @@
   function maybeFlipUnits(now){
     if (now < unitSwitchAt) return;
     unitSwitchAt = now + rand(1500, 6000);
-    // weighted: prefer ms and ns more often to feel slower
+    
     const pool = ['s','ms','ms','ns','ms','ns'];
     unitMode = pick(pool);
   }
@@ -115,7 +115,7 @@
       '🧩 assembling parts'
     ]);
 
-    // random path across the card
+    // random ahh path across the card
     const x0 = rand(-50, w*0.2), y0 = rand(0, h*0.9);
     const x1 = rand(w*0.6, w+60), y1 = rand(0, h*0.9);
     el.style.setProperty('--x0', `${x0}px`);
@@ -133,10 +133,10 @@
   function tick(now){
     if (phase !== 'counting') return;
 
-    // progress in real time
+    // progress irl
     const elapsedMs = now - startTs;
     const f = clamp(elapsedMs / REAL_MS_TOTAL, 0, 1);
-    const remainingDisplaySec = DISPLAY_SECONDS_TOTAL * (1 - f); // 3 -> 0 over 10min
+    const remainingDisplaySec = DISPLAY_SECONDS_TOTAL * (1 - f); 
 
     // UI updates
     maybeFlipUnits(now);
@@ -167,4 +167,33 @@
   unitLabel.textContent = 'seconds';
   statusLine.textContent = '…';
 })();
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+function pad3(n){ return String(n).padStart(3,'0'); }
+function pad6(n){ return String(n).padStart(6,'0'); }
+
+function splitTimeParts(seconds){
+
+  const s = Math.max(0, seconds);
+  const totalMs = Math.floor(s * 1000);
+  const mins = Math.floor(totalMs / 60000);
+  const sec  = Math.floor((totalMs % 60000) / 1000);
+  const ms   = totalMs % 1000;
+
+  // dolne 6 cyfr nanosekund
+  const ns6  = Math.floor((s * 1e9)) % 1_000_000;
+  return { mins, sec, ms, ns6 };
+}
+
+function renderTimeHTML(seconds){
+  const { mins, sec, ms, ns6 } = splitTimeParts(seconds);
+  // głowny zapis
+  let html = `${pad2(mins)}:${pad2(sec)}.${pad3(ms)}`;
+
+  // przy trybie ns
+  if (unitMode === 'ns'){
+    html += ` <span class="ns">${pad6(ns6)} ns</span>`;
+  }
+  return html;
+}
 
