@@ -1,8 +1,7 @@
 (() => {
   const KEY = 'tc_achievements_v2';
 
-  // --- Definitions --
-  // Add more items late
+ 
   const defs = {
     calculator: {
       title: "Calculator",
@@ -65,6 +64,18 @@
       icon: '🎯',
       desc: 'Reach 30 points in the platformer.'
     }
+          ]
+    },
+    Guesser: {
+  title: "Guesser",
+  items: [
+    {
+  id: "idk_either",
+  name: "I dont know either.",
+  desc: "Bro what are you even expecting me to do",
+  icon: "❓"
+},
+
   ]
 },
 
@@ -72,7 +83,7 @@
 
   
 
-  // --- Storage -
+  //Storage
   function load() {
     try { return JSON.parse(localStorage.getItem(KEY)) || []; }
     catch { return []; }
@@ -87,7 +98,7 @@
     list.push({ code, ts: Date.now() });
     save(list);
     toast(def ? `Achievement unlocked: ${def.name}` : `Achievement unlocked!`);
-    // notify any page that listens
+    // notify any page that idkhowtosaythat
     window.dispatchEvent(new CustomEvent('achievements-changed'));
     return true;
   }
@@ -106,7 +117,7 @@
     return { unlocked, total };
   }
 
-  // --- Toast (10s) -------
+  //Toast (10s)
   function toast(msg) {
     let host = document.getElementById('toastHost');
     if (!host) {
@@ -134,7 +145,7 @@
     setTimeout(() => card.remove(), 10000);
   }
 
-  // --- Renderer for achievements.html --
+  //renderer for achievements.html
   function render(container) {
     const root = (typeof container === 'string') ? document.querySelector(container) : container;
     if (!root) return;
