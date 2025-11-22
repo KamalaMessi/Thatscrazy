@@ -6,23 +6,107 @@
     <meta name="viewpoint" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
 
-    <style>
-.gq {
-  max-width: 700px;
-  margin: 50px auto;
-  text-aling: center;
-  color: #fff;
-  font-family: Inter, sans-serif;
-}
+ <style>
+    .gq {
+      max-width: 700px;
+      margin: 50px auto;
+      text-align: center;
+      color: #fff;
+      font-family: Inter, sans-serif;
+    }
 
-      .gq-card {
-        background: rgba(255,255,255,0.05);
-        border: 1px 
+    .gq-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.35);
+    }
 
-      
-    </style>
+    .gq-question {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
 
+    .gq-btns button {
+      margin: 8px;
+      padding: 10px 22px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #4b5563;
+      color: #fff;
+    }
 
+    .gq-btns button:hover {
+      background: #6b7280;
+    }
 
-    
-  </head>
+    /* Blocked No button */
+    .gq-blocked {
+      cursor: not-allowed !important;
+      background: #374151 !important;
+      color: #999 !important;
+      pointer-events: none;
+    }
+
+    .gq-result {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    .gq-zuck {
+      font-size: 2rem;
+      margin-top: 8px;
+      font-weight: 900;
+      color: #22d3ee;
+    }
+
+    .gq-end button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="gq">
+  <h1 class="page-title">🤖 Bro trust me i'll guess what celebrity you're thinking of</h1>
+
+  <div id="gqCard" class="gq-card">
+    <div id="gqStep">
+      <div id="gqQ" class="gq-question"></div>
+
+      <div class="gq-btns">
+        <button id="btnYes">Yes</button>
+        <button id="btnNo">No</button>
+        <button id="btnIdk">I don't know</button>
+      </div>
+    </div>
+
+    <div id="gqResult" class="gq-end" style="display:none;">
+      <div class="gq-result">The person you are thinking of is:</div>
+      <div class="gq-zuck">MARK ZUCKERBERG</div>
+      <p>Did I guess it right?</p>
+
+      <button id="btnRight">Yes</button>
+      <button id="btnWrong" class="gq-blocked">No</button>
+
+      <div id="gqFinalMsg" style="margin-top:20px; font-size:1.2rem;"></div>
+      <button id="playAgain" style="display:none;">Play again</button>
+    </div>
+  </div>
+</div>
+
+<script src="achievements.js"></script>
+<script src="guess.js"></script>
+
+</body>
+</html>
